@@ -1,0 +1,85 @@
+Angular JS vs. Angular 2
+
+- Angular js uses javascript where as Angular 2 uses typescript
+- Angular JS is MVC architecture, Angular 2 is MVVM.
+- Component-based instead of Controller-based
+- Angular 2 has improved dependency injection and modularity
+- Angular 2 supports Mobile.
+- follows object oriented approach
+
+Angular 2 vs Angular 4
+
+- Angular 2 uses normal ngIf block where as Angular 4 uses ng template approach
+- In Angular 4 @angular/core and  @angular/animation are separated to reduce bundle size. Previously animations were inside core.
+
+Angular4 vs Angular 6
+
+- Http->HttpClient 
+- HttpClient-> HttpClientModule
+-Dependency on RxJS 6
+-It uses angular.json instead of .angular-cli.json
+- In angular 4 To register new service/provider, we import Service into module and then inject in provider array. But in Angular 6 we can add provided in property in the injectible decorator.
+
+Angular 6 vs Angular 9
+
+- The default IVY compiler reduces the bundle size by 25-40 percent which enables better performance.
+- Previously JIT was default compiler, now AOT is the default commpiler.
+- for writing test cases we use.inject instead of .get wen we inject an instance of a class into the testbed.
+
+Angular9 vs Angular10
+- New options for 'providedIn'. -> 'platform' - makes the service accessible across a single platform
+- Updated to Typescript 3.7
+
+
+Bootstrap 3 Vs Bootstrap 4 
+
+- Bootstrap 3 breakpoints -> xs sm md lg -> <768px >= 768px, >= 992px, >= 1200px, Bootstrap 4 breakpoints -> xs sm md lg xl-> <576px >= 576px, >=768px , >= 992px, >= 1200px
+- Bootstrap 3 -> col-md-offset-* where as in Bootstrap 4 its offset-md-*
+-Flexbox: This useful feature allows you to change the size of grid columns with ease. Flexible makes it a lot simpler to create design flexible responsive layout structure even without using positioning or float.
+-Navbar: The Bootstrap Navbar in the latest version of the framework is written entirely in the flexbox.
+-The CSS source file update from LESS to SAAS
+-Relative CSS units: Bootstrap 4 framework uses rem instead of px, as the former is a lot more flexible when compared to the latter.
+-Cards Instead of Wells, panels, and Thumbnails
+-Bootstrap framework has dropped IE8 and IE9 support.
+
+
+HTML4 and HTML5
+
+- Semantic tags
+- media queries
+- canvas
+- media tags - audio,video
+- placeholder, required attribute
+- HTML APIs like - Geolocation, notification, etc
+
+ES5 and ES6+
+
+- var, let
+- block scope, function scope
+- template Strings
+- arrow function
+- async await ES8
+- promises
+- rest/spread operator
+- classes
+- destructuring
+
+Typescript and Javascript
+- Typescript is a superset of Javascript
+- Typescript code needs to be compiled while JavaScript code doesn’t need to compile.
+- Typescript uses concepts like types and interfaces to describe data being used whereas JavaScript has no such concept.
+- Type assertions in TS. <string>myStr
+- TS has a concept called modules. When we export anything from a file it becomes a module. which can be used in another file.
+- Optional Parameters in TS
+- Generics
+
+Angular Vs React
+- Choose Angular because
+	- developer friendly, easier to code
+	- high performance,
+	- prolonged community support
+	- suitable for large applications
+	- better error handling
+	- can write test cases
+	- use angular material for improving the asthetic of the application
+	- has ngrx and rxjs support

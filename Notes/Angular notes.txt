@@ -1,0 +1,19 @@
+Angular application optimization
+- Lazy Loading
+- Preloading
+- Track By
+- change detection strategy should be onPush
+- detach change detection and can use detect changes
+- Pure pipes
+- Not computing values in templates
+
+Security Issues
+- XSS -> CSP Headers, Automatic Dom Sanitizing, 
+- XSRF -> Ensure that a user request originates from the real application & not from a different site, XSRF Token, Whitelist Domains
+- XSSI -> Server adds special characters JSON response. Http client identifies these special characters, removes these characters and parses the API.
+- DoS -> Firewall, DDoS prevention software, increase bandwith
+- DDoS -> Same as above
+
+SEO
+- Angular universal / Server side rendering
+- Meta tags -> keyword, description, author, robot

@@ -1,0 +1,11 @@
+Node JS is a Javascript Runtime which runs on Chrome's V8 engine. It enables JS developers to read and write from a file system, create web servers, create REST APIs using JS, which was not possible before Node JS.
+
+To make API calls : 
+1. In JS file which is attatched to HTML file: -
+	-axios cdn
+	-fetch
+
+2. In normal Node JS file:-
+	- axios
+	- request({url : '', type : 'json'},(err,res)=>{})
+	- https.request(url,(response)=>{})

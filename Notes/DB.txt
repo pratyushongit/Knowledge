@@ -1,0 +1,14 @@
+NoSQL
+
+MongoDB
+Dynamo DB
+Redis DB
+
+Collection > Documents > Fields
+
+SQL
+
+MYSQL
+OracleDB
+
+Table > Records > Columns

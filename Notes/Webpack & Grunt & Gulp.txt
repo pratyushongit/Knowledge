@@ -1,0 +1,32 @@
+WEBPACK
+
+Webpack is a build automation tool.
+
+runtime.js is the webpack loader. This file contains webpack utilities that are needed to load other files
+
+code splitting - chunks
+minification
+Hot module replacement
+bundling
+load specific modules needed to start the application
+tree shaking
+
+Live reloading reloads or refreshes the entire a.pp when a file changes
+Hot reloading only refreshes the files that were changed without losing the state of the app
+
+GULP and GRUNT
+
+These are task runners. Task runners are basically used to automate tasks in a development process. Some of these tasks include compiling Sass files, watching out for file changes, auto-prefixing.
+
+GRUNT->
+It performs one task at a time.
+Grunt makes use of temporary files.
+Slower than Gulp.
+SCSS -> CSS-> Temp File
+Temp-File- > Auto Prefixer -> Destination
+
+GULP - >
+It performs several tasks at a time.
+Gulp uses Node Streams.
+Faster.
+SCSS -> CSS-> Auto Prefixer -> Destination

@@ -1,0 +1,16 @@
+NgRx
+State in Angular is basically a Javascript Object.
+UI -> ACTION -> REDUCER -> STORE(Observable/client side server) -> (On subscribing Get state)UI 
+
+Angular Universal - 
+
+Advantages in SSR
+IN CSR initially index.html is loaded which has app root selector. Now respective pages gets loaded depending upon the selector.
+So in CSR the logic to render all the selectors is inside a file bundle which is approx 200kb for a starter app which has to be downloaded on intial start of the applicaton. But in SSR the whole prepared HTML is fetched from the server onto the client. Hence the size is only 4-5 kb. Hence in SSR load time in SSR
+
+SSR has very good SEO. The search engine caller looks for html pages to your links and urls..which are present in SSR.
+
+Advantages of CSR
+In SSR whole page is downloaded from the server. If there are multiple clients accessing this page then the load on the server will increase.
+Server maintenance is required, which involves extra effort.
+In CSR we can access the browser api's directly without using a wrapper where as in SSR we need a wrapper to interact between browsers api and code.
