@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .error{
+            border: 1px solid red;
+        }
+        .success{
+            border: 1px solid green;
+        }
+    </style>
+</head>
+<body>
+    <form id="myForm" name="formSubmit">
+        <div class="form-control">
+            <label for="username">Username</label>
+            <input type="text" class="validation" name="username" id="username"><br/>
+            <small></small>
+        </div>
+        
+        <div class="form-control">
+            <label for="password">Password</label>
+            <input type="password" class="validation" name="password" id="password"><br/>
+            <small></small>
+        </div>
+        <label for="phone">Phone Number</label>
+        <input type="number" name="phonenumber" id="phonenumber"><br/>
+        <br/>
+        <div class="radio-buttons">
+            <input type="radio" name="family" value="F" id="father-r">Father<br/>
+            <input type="radio" name="family" value="M" id="mother-r">Mother<br/>
+            <input type="radio" name="family" value="S" id="sister-r">Sister<br/>
+        </div>
+        <br/>
+        <div class="checkboxes">
+            <input type="checkbox" name="father" value="F" id="father-c">Father<br/>
+            <input type="checkbox" name="mother" value="M" id="mother-c">Mother<br/>
+            <input type="checkbox" name="sister" value="S" id="sister-c">Sister<br/>
+        </div>
+        <br/>
+        <div class="select">
+            <select name="selectFamily" id="family">
+                <option value="F">Father</option>
+                <option value="M">Mother</option>
+            </select>
+        </div>
+        <br/>
+        <button>Submit</button>
+    </form>
+   
+    <script src="form.js"></script>
+</body>
+</html>

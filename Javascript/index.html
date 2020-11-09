@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            padding: 30px;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="grandfather">
+        <div id="father">
+            <div id="child">
+            </div>
+        </div>
+    </div>
+    <label for="email">Email:</label>
+    <input id="email" name="email" type="email" />
+
+    <input type="text" name="debounce" id="debounce" onkeyup="debounceAutoSuggest('arg')" placeholder="Debouncing">
+    <input type="text" name="throttle" id="throttle" onkeyup="throttlingAutoSuggest('arg')" placeholder="Throttling">
+
+    <canvas id="myCanvas" width="100px" height="100px" style="border: 1px solid #000000"></canvas>
+
+    <svg>
+        <circle r="40" cx="80" cy = "80" stroke="green" fill="yellow" stroke-width="2"></circle>
+    </svg>
+
+    <div class="custom-elements"></div>
+
+    <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <img id="drag1" src="https://www.w3schools.com/html/img_logo.gif" draggable="true" ondragstart="drag(event)" width="336" height="69">
+
+    <script src="practice.js"></script>
+</body>
+
+</html>

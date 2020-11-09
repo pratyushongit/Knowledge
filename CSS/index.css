@@ -1,0 +1,47 @@
+/* Create circle inside a square using only a single div */
+.square{
+    width: 200px;
+    height: 200px;
+    background-color:grey;
+    border: 2px solid #000;     
+}
+/* Circle */
+.square::after{
+    content: '';
+    width: 196px;
+    height: 196px;
+    border-radius: 50%;
+    background-color:red;
+    border: 2px solid #000; 
+    display: block;
+}
+
+/* ------------------------------------------------------ */
+
+/* Center Aligned using Flexbox*/
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+/* Center Aligned not using Flexbox*/
+
+.container{
+    width: 500px;
+    padding: 20px;
+    border: 1px solid black;
+    position: relative;
+}
+
+.content{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+
