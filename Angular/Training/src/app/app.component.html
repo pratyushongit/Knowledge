@@ -1,0 +1,149 @@
+<div style="display: none;">
+  <!-- Data Binding -->
+
+
+  <h1>{{"Title =" + title}}</h1>
+
+  <!-- Interpolation - 1 way binding-->
+  <img src="{{source}}" width="100" height="100">
+
+  <!-- Property Binding - 1 way binding-->
+  <img [src]="source" width="100" height="100">
+
+  <!-- Attribute Binding - 1 way binding -->
+  <table>
+    <tbody>
+      <tr>
+        <td [attr.colspan]="colSpan">WOW</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Class Binding - 1 way binding -->
+  <span class="text" [class.error]="isActive">I am Pratyush</span>
+
+  <!-- Style Binding - 1 way binding -->
+  <span [style.color]="isActive? 'blue' : 'green'">Biswas</span>
+
+
+  <!-- Event Binding - 1 way binding -->
+  <input type="text" name="" id="" (keyup)="trigger()">
+  <!-- Event Filter -->
+  <input type="text" name="" id="" (keyup.enter)="trigger()">
+
+  <!-- Template Variables - 1 way binding-->
+  <input type="text" #username (keyup.enter)="submit(username)">
+
+  <!-- 2 way binding - traditional way -->
+  <p>
+    <input type="text" #userBind (keyup)="submit(userBind)">
+    <span>{{userVal}}</span>
+  </p>
+
+  <!-- 2 way binding - ngModel -->
+  <p>
+    <input type="text" [(ngModel)]='bindModel'>
+    <span>{{bindModel}}</span>
+  </p>
+
+  <!-- ------------------------------------------------------- -->
+
+
+
+
+
+  <!-- Directives -->
+
+  <!-- Structural Directives -->
+
+  <!-- *ngIf -->
+
+  <div *ngIf = "isActive; then trueCon else falseCon"></div>  
+  <ng-template #trueCon>
+    This is true
+  </ng-template>
+  <ng-template #falseCon>
+    This is false
+  </ng-template>
+
+  <!-- ng-template -->
+  <ng-template>
+    This is ngTemplate
+  </ng-template>
+
+  <!-- Hidden -->
+  <div [hidden]="isActive"> Hi i am hidden</div>
+
+  <!-- *ngSwitchCase -->
+
+  <div [ngSwitch]="isActive">
+    <p *ngSwitchCase = "true">This is ture switch</p>
+    <p *ngSwitchCase = "false">This is false switch</p>
+  </div>
+
+
+  <!-- *ngFor -->
+
+  <ul>
+    <li *ngFor="let loop of filterLoop; let i = index; let e = even;" [class.error]="e">{{loop + " index : "+ i}}</li>
+  </ul>
+
+  <!-- trackBy -->
+
+  <ul>
+    <li *ngFor="let loop of myLoop; trackBy : trackData" [class.error]="e">{{loop.course}}</li>
+  </ul>
+  <button (click)="loadData()">Load</button>
+
+  <!-- Attribute Directives -->
+
+  <!-- ngClass -->
+  <div [ngClass]="'error'">this is ngClass</div>
+  <div [ngClass]="['error', 'bold']">this is ngClass</div>
+  <div [ngClass]="{'error' : isActive , 'success' : !isActive}">this is ngClass</div>
+
+  <!-- ngStyle -->
+  <div [ngStyle]="{'color' : 'green'}">this is ngStyle</div>
+  <div [ngStyle]="{'color' : isActive? 'red' : 'blue'}">this is ngStyle</div>
+  <div [ngStyle]="{'color' : textColor, 'font-weight' : 'bold'}">this is ngStyle</div>
+  <div [ngStyle]="styleObj">this is ngStyle</div>
+
+  <!-- Safe Traversal Operator -->
+  <div> Safe Traversal : {{task.operator?.asignee}}</div>
+
+  <!-- Custom Directives -->
+  <div>
+    <input type="text" name="dir" id="dir" placeholder="Directive" inputFallback [format]="'uppercase'">
+  </div>
+
+  <!-- ------------------------------------------------------- -->
+
+
+
+
+
+  <!-- Pipes -->
+
+  <p>{{pipes.myName | uppercase}}</p>
+  <p>{{pipes.num | number}}</p>
+  <p>{{pipes.rating | number : '2.2-3'}}</p>
+  <p>{{pipes.price | currency: 'USD' : true : '3.2-2'}}</p>
+  <p>{{pipes.now | date : 'dd/MM/yyyy HH:mm:ss'}}</p>
+  <p>{{pipes.rating | percent : '1.1-2'}}</p>
+  <p>{{pipes | json}}</p>
+  <p>{{promise | async}}</p>
+  <p>{{ observable | async | json }}</p>
+
+  <!-- Custom Pipes -->
+
+  <p>Custom Pipes</p>
+
+  <input [(ngModel)]="search" type="text" name="search" id="search" placeholder="Search">
+
+  <ul>
+    <li *ngFor="let loop of filterLoop | filter : search">{{loop}}</li>
+  </ul>
+</div>
+<!-- ----------------------------------------------------------- -->
+
+<router-outlet></router-outlet>

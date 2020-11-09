@@ -1,0 +1,7 @@
+<p>Animations</p>
+
+<div [@openClose]="isOpen? 'open' : 'closed'" class="open-close-container">
+    <p>The box is {{isOpen? 'open' : 'closed'}}</p>
+</div>
+
+<button (click)="toggle()">Toggle ME!</button>

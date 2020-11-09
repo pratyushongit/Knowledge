@@ -1,0 +1,25 @@
+<form [formGroup]="form" (ngSubmit)="login()">
+    <div *ngIf="form.errors">
+        <p *ngIf="form.errors.invalidForm">Invalid Form</p>
+    </div>
+    <div formGroupName="account">
+        <div class="form-control">
+            <label for="username">Username</label>
+            <input formControlName="username" type="text" name="username" id="username">
+            <div *ngIf="username.touched && username.invalid">
+                <p *ngIf="username.errors.required">Username is required</p>
+                <p *ngIf="username.errors.minlength">Username should be of {{username.errors.minlength.requiredLength}}</p>
+                <p *ngIf="username.errors.checkSpace">Username should not contain spaces.</p>
+                <p *ngIf="username.errors.checkElement">Username should not be same.</p>
+            </div>
+        </div>
+        <br/>
+        <div class="form-control">
+            <label for="password">Password</label>
+            <input  formControlName="password" type="password" name="password" id="password">
+        </div>
+        <br/>
+    </div>
+    <button [disabled]="form.invalid">Submit</button>
+    <button (click)="setData()">Load Data</button>
+</form>

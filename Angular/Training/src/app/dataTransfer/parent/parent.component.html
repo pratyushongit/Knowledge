@@ -1,0 +1,8 @@
+<p>parent works!</p>
+{{myValue}}
+<app-child [is-appData]="appData" (is-outData)="eventData($event)">
+    <!-- <div class="heading">I am div ngContent</div> -->
+    <ng-container class="heading">
+        <p>I am ngContent</p>
+    </ng-container>    
+</app-child>
