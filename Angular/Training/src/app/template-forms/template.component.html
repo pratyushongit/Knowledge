@@ -1,0 +1,28 @@
+<form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <div *ngIf="f.invalid && f.touched">
+        <p>Form not Valid</p>
+    </div>
+    <div class="form-control">
+        <input type="text" name="username" id="username" ngModel #username required>
+    </div>
+    <div class="form-control">
+        <input type="password" name="password" id="password" ngModel #password required>
+    </div>
+    <div ngModelGroup="inputs" #inputs="ngModelGroup">
+        <div class="form-control">
+            <select name="country" id="country" ngModel>
+                <option value="Fin">Finland</option>
+                <option value="In">India</option>
+            </select>
+        </div>
+        <div class="form-control">
+            <input type="checkbox" name="checkbox" ngModel value="F">Checkbox
+        </div>
+        <div class="form-control">
+            <input type="radio" name="gender" value="M" ngModel>Male
+            <input type="radio" name="gender" value="F" ngModel>Female
+        </div>
+    </div>
+    <button [disabled]="f.invalid">SUBMIT</button>
+    {{f.value | json}}
+</form>

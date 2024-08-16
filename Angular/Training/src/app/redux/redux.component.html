@@ -1,0 +1,10 @@
+<form #f="ngForm" (ngSubmit)="submit(f)">
+    <div class="form-control">
+        <input type="text" name="name" id="name" ngModel>
+        <input type="text" name="quantity" id="quantity" ngModel>
+    </div>
+    <button>Add</button>
+</form>
+<ul>
+    <li *ngFor="let ingredient of (ingredients | async).ingredients">{{ingredient.name}} {{ingredient.quantity}}</li>
+</ul>

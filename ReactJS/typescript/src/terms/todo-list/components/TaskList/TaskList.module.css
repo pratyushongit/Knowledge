@@ -1,0 +1,9 @@
+.task_container {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 500px;
+  border: 1px solid;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+  padding: 10px;
+  gap: 10px;
+}

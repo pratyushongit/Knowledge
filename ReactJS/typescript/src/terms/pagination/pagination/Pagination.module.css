@@ -1,0 +1,17 @@
+.pagination-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+
+  .pagination-item {
+    padding: 10px;
+    background-color: lightgray;
+    border: 1px solid black;
+    cursor: pointer;
+
+    &.selected {
+      background-color: grey;
+    }
+  }
+}

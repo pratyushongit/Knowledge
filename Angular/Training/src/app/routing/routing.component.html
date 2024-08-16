@@ -1,0 +1,14 @@
+<h3>Routing</h3>
+
+<nav>
+    <ul>
+      <li><a [routerLink]="['parent']" routerLinkActive='active'>Parent component</a></li>
+      <li><a [routerLink]="['child']" routerLinkActive='active'>Child component</a></li>
+      <li><a [routerLink]="['child',param]" routerLinkActive='active'>Child of Child component</a></li>
+      <li><a [routerLink]="['child',param]" [queryParams]="{page: 10,name: 'Pratyush'}" routerLinkActive='active'>Query Params</a></li>
+      <li><a href="#" (click)="navigate($event)">Dynamic Navigation of Route Param</a></li>
+      <li><a href="#" (click)="navigateQuery($event)">Dynamic Navigation of Query Param</a></li>
+    </ul>
+  </nav>
+
+<router-outlet></router-outlet>
