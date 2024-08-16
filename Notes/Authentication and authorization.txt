@@ -1,0 +1,148 @@
+Authentication -> Authentication is the process of verifying the identity of a user or entity. In the context of web applications, authentication typically involves users providing credentials, such as a username and password, to prove their identity. Once the user's identity is verified, the system typically issues an authentication token or session identifier, which is used to identify the user in subsequent requests.
+
+Authorization -> Authorization is the process of determining whether a user or entity has permission to access a particular resource or perform a specific action.
+
+--------------------------------------
+
+Stateful Authentication:
+IT uses session id. When a user logs in a website using its login credentials, the server assigns a session id and stores the user info against the session id in a db. Now this session id is sent to the user in the response header using 'Set-Cookie' : 'sessionid=123123123';. This Set-Cookie header instructs the browser to store the cookie sent on the device. Now everytime the user makes subsequent requests the cookie is fetched and attached in the request header using 'Cookie': 'sessionid=123123123'; Through this session id the server auntheticates the user.
+
+Pros:
+we have control over the session id as we have control over the db.
+It is used for small duration sessions. Such as banking applications.
+
+Cons:
+If the users increase the db cant hold all data. Hence slow.
+If the server restarts all the data is lost.
+
+
+
+Stateless Authentication:
+It uses authorization token. When a user logs in a website using its login credentials, the server assigns a JWT token to the user. This token is sent to the user using 'Authorization: Bearer <JWTtoken>'  header in the response.  Now everytime the user makes subsequent requests the token is attached to the request header using 'Authorization: Bearer <JWTtoken>'. Through this token the server auntheticates the user.
+
+Pros:
+No need to maintain db.
+It is serverless
+
+Cons:
+To remove a faulty token we have to blacklist the token that is a complex proces.
+It is not so much security efficient as session id.
+
+--------------------------------------
+
+JWT: JSON web token. 
+It consists of 3 parts:
+	- Header - consists of the type of token and the signing algorithm. It is encoded using Base64URL.
+	- Payload - it consists data about the user and also the roles assigned to it. It is encoded using Base64URL.
+	- Signature - it contains Base64URL encoded <header> + "." + Base64URL encoded <payload> + a secret key which is present only in the server. All these 3 are then signed by the signing he signaturealgo mentioned in the header.
+IF an attacker changes the body of the JWT and sent the token in a request. The server creates a signature using the new body and header and the secret key known to the server. If the generated signature matches the already existing signature of the JWD token, the request is validated else rejected.	
+
+Cookie: It is a piece of data stored into the computer by the browser which contain user data such as username, browsing trends. Size - 4kb
+	There are 2 types of cookies:
+	first party - First-party cookies are set by the website that the user is currently visiting.
+	third party - Third-party cookies are set by domains other than the one the user is currently visiting. Usually used while displaying ads.
+	
+Set cookie:
+document.cookie= "username=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC; path=/";
+
+Read cookie:
+let x = document.cookie;
+	
+Change Cookie: (overwrite existing cookie)
+document.cookie = "username=John Smith";
+
+Delete a Cookie:
+document.cookie = "username=";
+
+If we want to set a token in cookie we should set the following flags to prevent XSS and CSRF issues:
+	HttpOnly:  it instructs the browser that the cookie should not be accessible via client-side scripts such as JavaScript. Prevents XSS.
+	SameSite=Strict:  This means that the cookie will only be sent along with requests initiated by the same site of which the cookie is from. Prevents CSRF.
+
+Local Storage: stores data in the browser as long as it is not manually cleared by the user or the application. Size 5-10 mb.
+
+Session Storage: stores data in the browser for the duration of the page session. Once the browser tab or window is closed, the data is cleared. Size 5-10 mb.
+
+Indexed DB -> It is a NoSQL db in the browser. IndexedDB is commonly used in web applications for offline data storage, caching, and client-side data management. It is also used in PWAs to provide offline usability.
+Provides offline Data Synchronization - Changes made by the user while offline can be stored locally in IndexedDB and synchronized with the server once an internet connection is restored.
+ with the help of web workers
+ 
+ PWA:
+ Progressive Web App (PWA).
+ It is a type of web application that provides a user experience similar to that of native mobile apps.
+ They leverage features such as offline support, push notifications, and home screen installation & real time updates.
+
+-----------------------------------------
+
+OAuth: Access without password. It is basically an authentication process which allows any 3rd party app to go to an authorization provider and fetch one's details and then validate the user. 
+We can use Auth0 identity provider to perform oauth authentication.
+
+SSO: It's an authentication process that allows users to access multiple applications or services with a single set of login credentials (such as a username and password). 
+Here's how SSO typically works:
+When a user attempts to access an application or service, they are redirected to a central authentication server.
+The user enters their credentials
+If the credentials are valid, the authentication server generates a token (such as a session token or JSON Web Token) 
+The token is then passed back to the requesting application.
+
+We can use Okta or Auth0 Identity providers to perform SSO authentication.
+
+Okta is better than Auth0 as it provides better life cycle management, API access management
+
+-------------------------------------
+
+Implementing authentication and authorization in a React web app typically involves several steps. Here's a high-level overview of the process:
+
+Set up a Backend: 
+	You need a backend server to handle authentication, store user credentials securely, and manage user sessions. Common choices for backend technologies include Node.js with Express, Django, Flask, or any other ba	ckend framework of your choice.
+
+Implement Authentication:
+	Create APIs for user registration, login, logout, and password reset.
+	Use secure authentication mechanisms such as JSON Web Tokens (JWT) or session-based authentication.
+	Implement password hashing and salting to securely store user passwords.
+	Set up routes on the backend to handle authentication requests.
+
+Integrate Authentication with React:
+	Set up a login form component where users can enter their credentials.
+	Use libraries like Axios or Fetch to make HTTP requests to your backend API.
+	Handle authentication responses in your React components, such as storing tokens in local storage or session storage.
+	Create protected routes that require authentication before accessing certain pages or components.
+	
+Implement Authorization:
+	Define user roles and permissions in your backend system.
+	Create middleware or logic on the backend to check if a user has the necessary permissions to access certain resources or perform specific actions.
+	Secure your frontend routes and components based on user roles or permissions.
+	Use conditional rendering in React components to show or hide certain UI elements based on user permissions.
+
+Handle Authentication State:
+	Manage authentication state globally using React context, Redux, or similar state management libraries.
+	Create authentication hooks or higher-order components (HOCs) to handle authentication-related logic across your app.
+
+Secure API Endpoints:
+	Use authentication tokens to secure your API endpoints and verify the identity of users making requests.
+	Implement middleware on your backend to authenticate and authorize incoming requests.
+
+Handle Logout:
+	Provide a way for users to log out of your application.
+	Clear authentication tokens from local storage or session storage on logout.
+
+Secure Communication:
+	Use HTTPS to encrypt communication between your frontend and backend to prevent man-in-the-middle attacks.
+	
+	
+Remember to follow security best practices throughout the development process, such as avoiding storing sensitive information in local storage, implementing CSRF protection, and regularly updating dependencies to patch security vulnerabilities.
+
+
+----------------------------
+
+HTTP vs HTTPs protocol -> HTTPS provides an encrypted communication channel b/w frontend and backend. IT is less vulnerable to attacks. Where as HTTP doesn't prode an encrypted channel.
+
+
+TCP -> Transmission Control protocol. It is a communications standard that allows devices to exchange messages over a network, such as the internet. 
+
+HTTP -> There is a distinct connection for every request. It increases the load on the server as the server has to create a new handshake for every request. Once req is completed, connection is closed.
+
+Web sockets ->	
+https://www.youtube.com/watch?v=G0_e02DdH7I&ab_channel=ByteMonk
+
+Web socket protocol is an independant TCP based protocol. It provides a complete duplex communication between the client and the server. The connection is persistent as long as it is not interrupted by either the server or the client. The handshake of a web socket is interpreted by HTTP servers as an upgrade request.
+
+

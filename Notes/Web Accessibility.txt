@@ -1,0 +1,16 @@
+Make websites web accessible-
+- Contrasting colors
+- dont depict any information using only color
+- provision to chang fonst sizes
+- pair both mouse and key events
+- title in <a>
+- alt in images
+- aria tags
+- dont use images in css files
+
+Test Web Accessibility-
+- Screen Readers
+- Chrome Extensions to see how a color blind person will read the page
+- use only mouse or keyboard to access the full app
+- turn off images
+- remove css linking

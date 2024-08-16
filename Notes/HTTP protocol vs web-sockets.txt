@@ -1,0 +1,9 @@
+WebSocket Connection:
+
+WebSocket is a bidirectional communication protocol that can send the data from the client to the server or from the server to the client by reusing the established connection channel. The connection is kept alive until terminated by either the client or the server.
+It is suitable for applications that show real-time data and applications that require frequent updations.
+
+HTTP Connection:
+
+The HTTP protocol is a unidirectional protocol that works on top of TCP protocol. When a client sends an HTTP request to the server, a TCP connection is open between the client and server and after getting the response the TCP connection gets terminated.
+It is suitable when we want to get the data from the server if we are loading the data only once. 

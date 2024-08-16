@@ -1,0 +1,444 @@
+JAVASCRIPT
+
+Imperative Programming - Developers are more concerned with how to get an answer step by step. The order of execution is very important.
+Declarative Programming - Developers are more concerned with the answer that is received. It mainly focuses on end result.
+
+---------------
+
+console.log(typeof 23); //number
+console.log(typeof "text"); // string
+console.log(typeof true); //boolean
+console.log(typeof undefined); //undefined
+console.log(typeof null); //object
+console.log(typeof NaN); //number
+console.log(typeof []); //object
+console.log(typeof {}); //object
+console.log(typeof Object); //function
+console.log(typeof function()); //function
+console.log(typeof Number); //function
+console.log(typeof String); //function
+console.log(typeof Boolean); //function
+console.log(typeof 67n); //bigint
+
+-------------
+
+console.log("10" + "5"); // '105' => string + string = string
+console.log("10" + 5); // '105' => string + number = string
+console.log(10 + "5"); // '105' => number + string = string
+console.log(10 + 5); // 15 => number + number = number
+
+console.log("10" - "5"); // 5 => string - string = number
+console.log("10" - 5); // 5 => string - number = number
+console.log(10 - "5"); // 5 => number - string = number
+console.log(10 - 5); // 5 => number - number = number
+
+Same above output for * and /
+
+console.log("10" - "4" - "3" - 2 + "5"); // '15' => string
+
+--------------
+
+Falsy values -> false, 0, '', undefined, null, NaN
+
+--------------
+
+=== does not perform type coercion
+
+Strict mode makes it easier to write "secure" JavaScript. Strict mode changes previously accepted "bad syntax" into real errors.
+
+Switch statement does strict comparison
+-------------
+
+//Function Declaration
+
+sum(1, 2);
+
+function sum(a, b) {
+  console.log(a + b);
+}
+
+// Function Expression
+
+var sum = function (a, b) {
+  console.log(a + b);
+};
+
+sum(1, 2);
+
+Function declarations are hoisted hence the function can be called before it is defined. 
+Function expressions are not hoisted hence the function can NOT be called before it is defined.
+
+---------------
+
+// Arrow functions 
+
+This was introduced in ES6.
+
+const sum = (a, b) => {
+  console.log(a + b);
+};
+
+sum(1, 2);
+
+---------------
+
+Lexical scoping refers to when the location of a function's definition determines which variables you have access to. 
+On the other hand, dynamic scoping uses the location of the function's invocation to determine which variables are available.
+
+--------------
+
+const obj = {
+  name: "John",
+  age: 20,
+  calcAge: () => {
+    console.log(this);
+  },
+};
+
+Result -> Window object
+
+
+const obj = {
+  name: "John",
+  age: 20,
+  calcAge: function () {
+    console.log(this);
+  },
+};
+
+Result -> This keyword is equal to the object calling the method
+
+---------------
+
+Getting a random integer between two values, inclusive -> Math.floor(Math.random() * (max - min + 1) + min)
+
+---------------
+
+DOM -> Document object model. It is the structured representation of an HTML webpage. It enables JS to manipulate HTML elements on the webpage and style them. DOM structure is created when the page loads. It is basically a tree of objects where every object is an HTML element.
+
+WEB APIs -> DOM, DOM methods, timers, fetch. Web APIs are basically libraries which browsers implement, which can be accessed by Javascript. 
+
+Using "textContent" will return the complete text content, including the hidden text. However, using "innerText" will only return the visible text content, excluding the hidden text.
+
+---------------
+
+JS Execution Context:
+
+2 phases:
+
+creation phase - it performs 3 steps -> 1. creates a global/window object, 2. sets up a memory heap to store variables and function references, 3. initializes those functions and variable declarations with undefined.
+
+execution phase - JS executes the code line by line, assigning the values to variables and execute function calls.
+
+
+--------------
+
+Compilation - Is the process in which the whole code is converted into machine code and is written onto a binary file Which is then executed later by the processor.
+Interpretation - Is the proces in which the code is executed one line at a time. Would take a very long time.
+JIT - Is the process in which the whole code is converted into machine code and executed immediately
+
+--------------
+
+Callback queue contains -> event handler callbacks, timers, api fetch
+
+---------------
+
+Global execution context is an environment in which JS code is executed. Global execution context is created for top level code. There is only one global execution context in each JS code.
+Top level code is the code which is not inside any function.
+One execution context per function call is created.
+
+-------------
+
+Higher order function is a function which accepts functions as arguments and/or returns a function.
+Callback function is a function which is passed as an argument to a higer order function.
+
+------------
+
+Scope is the area in our JS code within which a variable is accessible.
+Scope chain is the phenomenon in which every scope has access to the variables from all it's outer scopes.
+Variable lookup - If a scope tries to access a variable and it doesn't find it in the current scope it will look for the variable in it's parent scope. If the variable is still not found it will move up the scope chain to find the variable. If the variable is found it will use it, if not it will throw an error.
+
+-----------
+
+Functions are blocked scoped in strict mode and function scoped in non strict mode.
+TDZ- Temporal dead zone - Area within which a variable is inaccessible. The area in between the start of the scope and the place where a variable is declared.
+Hoisting - Variable and function declarations are moved to the top of the scope.  function expressions are hoisted depending upon its declaration(var/let/const). Var variables is hoisted.
+Imp note -> 
+Variables declared with let or const are hoisted WITHOUT a default initialization. So accessing them before the line they were declared throws ReferenceError: Cannot access 'variable' before initialization.
+But variables declared with var are hoisted WITH a default initialization of undefined. So accessing them before the line they were declared returns undefined.
+
+If we try to acess a variable outside of the scope of the variable it throws an error - ReferenceError: Variable is not defined.
+
+ IIFE(Immediately Invoked Function Expression) is just like any other function expression which won't be hoisted. 
+-----------
+
+This keyword - The this keyword points to an object which calls the function within which the this keyword is defined.The value of this keyword is not static. It depends on how the function is being called.
+
+Method -> this keyoword points to the object calling the function
+Simple function call -> In strict mode, this is undefined. In non-strict mode , this points to window object.
+Arrow functions -> don't have their own this keyword.It uses the this keyword of its parent function. This is called lexical this keyword.
+Event listner -> this keyword points to the DOM element the handler is attached to.
+
+----------
+
+Arguments keyword is defined in a simple function but not in arrow functions.
+
+----------
+
+// Short circuiting ||
+console.log(true || true || true); // first truthy value
+console.log(false || false || false); // last falsy value
+console.log(true || false || true); // first truthy value
+console.log(false || true || false); // first truthy value
+
+// Short circuiting &&
+console.log(true && true && true); // last truthy value
+console.log(false && false && false); // first falsy value
+console.log(true && false && true); // first falsy value
+console.log(false && true && false); // first falsy value
+
+---------
+
+Nullish Coalescing Operator (??)
+const guests = 0;
+
+let total = (guests ?? 10) * 100;
+console.log(total);
+
+---------
+
+const arr = ['cat', 'dog', 'rabbit'];
+const obj = {
+  name: 'John',
+  age: 20,
+};
+
+// SETS -> Sets are data objects that hold a collection of unique values.
+
+const set = new Set(arr);
+set.has('rat'); //returns true/false
+set.add('rat'); // returns the complete set 8u9	
+set.delete('rat'); //returns true/false
+set.size; //returns length
+set.entries(); //returns key value as the same value
+const setArr = Array.from(set); //convert set to array
+//iteration
+for (const value of set) {
+  console.log(value);
+}
+
+
+// MAPS -> a Map is a collection of key-value pairs where the keys can be of any type, including objects or functions.
+const map = new Map();
+map.set('name', 'John');
+map.set(1, 20);
+map.set(false, 'wow'); // returns the complete set
+map.get(false); // returns 'wow'
+map.delete('name'); //
+map.size; //returns length
+map.has(1); //returns true/false
+//iteration
+for (const [key, value] of map) {
+  console.log(`${key}: ${value});
+}
+map.forEach((value, key, original) => {
+  console.log(`${key}: ${value}`);
+});
+
+const maps = new Map([
+  ['name', 'John'],
+  [1, 20],
+  [false, 'wow'],
+]);
+
+// OR
+
+const newMaps = new Map(Object.entries(obj));
+
+// Difference between maps and objects is that in objects keys are strings always. In maps the key can be of any datatype
+
+--------------------------
+
+First class functions - A programming language is said to have first class functions if the functions in that language are treated as values
+Higher order functions - These are functions which accepts functions as parameters or returns functions.
+
+------------------------
+
+// Callback function
+const uppercase = str => {
+  return str.toUpperCase();
+};
+
+// Higher order functions
+const operation = (val, fn) => {
+  console.log(fn(val));
+};
+
+operation('ronAN', uppercase);
+
+------------------------
+
+IIFE - are a common JavaScript pattern that executes a function instantly after it's defined. Developers primarily use this pattern to ensure variables are only accessible within the scope of the defined function. We use I?FFEs when we want to execute the function only once.
+
+(() => {
+  console.log('Run Once');
+})();
+
+--------------------
+
+Closure - A closure means that an inner function has access to the variables defined in the parent function, even though the parent function has returned. We do NOT manually create closures. They are automatically created by JS. We also can NOT access a closure.
+Examples -> Event handlers, IIFEs, callbacks
+
+--------------
+
+Shallow Copy:
+//A deep copying means that value of the new variable is disconnected from the original variable while a shallow copy means that some values are still connected to the original variable.
+
+Arrays:
+	- [...array]
+	- array.slice()
+	- loops
+	- Array.from(array)
+	- array.concat([])
+	- map,filter,reduce
+
+Objects:
+	- Object.assign({}, person)
+	- {...object}
+	
+Deep Copy:
+
+Arrays:
+	- JSON.parse(JSON.stringify(array))
+	
+Objects:
+	- JSON.parse(JSON.stringify(object))
+	
+-----------------
+
+Continue and break statements do not work in For Each loop at all. It works in for of, for in and for loop.
+
+-----------
+
+_ in fat arrow function is called as throwaway variable. 
+
+-------------
+
+
+Transpiling - Convert all modern JS features back to ES5 syntax so that older browsers can understand the code. Tool used  - Babel
+
+Most common build tools are webpack or parcel
+
+
+//ES6 Modules
+In JavaScript, a module is a self-contained unit of code that encapsulates specific functionality. Modules help in organizing code into smaller, more manageable pieces, making it easier to maintain, scale. With the introduction of ES6 (ECMAScript 2015), JavaScript gained built-in support for modules through the import and export keywords. Prior to ES6, developers used various module systems like CommonJS, AMD, or UMD
+ES6 modules are always executed in strict mode
+This is undefined and in scripts this is window object by default
+All imports in a module is hoisted
+to link module to html use <script type="module">
+Modules are fetched in an async manner unlike scripts
+Variables inside a module are not global scoped . They are scoped inside the specific module.
+imports are not copy of exports , rather they are a live copy of the exports. any change in export will change the import value
+
+
+// Top level await
+
+Only works for modules
+ES13 feature
+
+// Polyfiling & transpiling
+
+Transpiling (parcel) can only convert es6+ syntax to their equivalent es5 syntax. For features in es6+ which dont have their corresponding es5 syntax, polyfills come into picture.
+
+/////////////
+
+Object.freeze is used to make an object or a data structure immutable. It only works for the first level.
+
+
+Conditionally add properties to an object -> 
+{
+	age : 10,
+	...( recipe.key && {key: recipe.key}),
+}
+
+------------------
+
+Looping over Arrays
+
+let arr = [1, 2, 3, 4, "wow"];
+
+//for of
+for (const iterator of arr) {
+  console.log(iterator); // 1 2 3 4 wow
+}
+
+//using Object.entries
+for (const [key, value] of Object.entries(arr)) {
+  console.log(key, value);
+}
+// Output:
+// 0 1
+// 1 2
+// 2 3
+// 3 4
+// 4 wow
+
+console.log(Object.entries(arr)); // [['0',1], ['1', 2], ['2', 3], ['3', 4], ['4', wow]]
+console.log(Object.keys(arr)); // ['0', '1', '2', '3', '4']
+
+-----------------
+
+Looping over Objects
+
+let person = {
+  name: "John",
+  age: 10,
+};
+
+//for in
+for (const key in person) {
+  console.log(person[key]); // John 10
+}
+
+//using Object.entries
+for (const [key, value] of Object.entries(person)) {
+  console.log(key, value);
+}
+// Output:
+// name John
+// age 10
+
+console.log(Object.entries(person)); // [["name", 'John'], ["age", 10]];
+console.log(Object.keys(person)); // ['name', 'age']
+
+Note: Object.keys() only iterates over instance members. For in loop iterates over both instance and protypical members.
+
+--------------------
+
+Generator function: is a function which returns a value to the caller function using the keyword yield instead of the traditional return keyword. As soon as the yield keyword is encountered, the function execution is suspended at that position. A generator function retains the state even after retuning the value to the caller function such that the execution can be resumed from the place it was paused.
+
+--------------------
+
+Abstract class: It's a class whose instance cannot be created. They also have abstract methods which are declared but not implemented. It provides a blueprint for the sub classes which inherit from it.
+
+-------------------
+
+In Dynamic Programming (Dynamic Tables), you break the complex problem into smaller problems and solve each of the problems once. Dynamic programming is nothing but recursion with memoization.
+Memoization - caching the results of expensive function calls and reusing them when the same inputs occur again. 
+
+------------------
+
+Iterable: It is an object which can be iterated over via a method whose key is Symbol.iterator.
+Iterator: Iterator is an object or pattern that allows us to traverse over a list or collection. It is an object returned by invoking [Symbol.iterator]() on an iterable. This iterator object wraps each iterated element in an object and returns it via next() method one by one. 
+IteratorResult: It is an object returned by next() method. The object contains two properties; the value property contains an iterated element and the done property determines whether the element is the last element or not.
+
+-------------------
+
+/////////////
+
+const x = {age : 10, name: 'John'}
+y = Object.entries(x); // [[age,10], [name, 'John']]
+z = Object.fromEntries(y); // {age : 10, name: 'John'}
+
+--------------
+

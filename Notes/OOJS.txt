@@ -1,0 +1,554 @@
+POP -> Procedural programming focuses on procedures and functions. There were functions which used to operate on variables. So this led to multiple functions being introduced in the code. Hence spagetti code.
+OOP -> It is based on the concepts of Objects.
+
+Class -> Class is a blueprint which is used to create objects from.
+	eg - Car {
+				color,
+				weight,
+				
+				function accelerate(),
+				function deaccelerate(),
+			}
+Object -> It is an entity with certain data(properties) and behaviour(methods).
+	eg - const car = new Car('red', '500kg')
+
+----------
+
+OOP Principles:
+
+Abstraction -> Ignoring or hiding details that don't matter.
+		EG: Real life eg - Car
+			Code eg - Car {
+							color,
+							weight,
+							model,
+							make,
+							year,
+						
+							function accelerate(),
+							function deaccelerate(),
+							function reverse(),
+							private function move(),
+						}
+
+Encapsulation -> Group variables and functions that operate on them into a single unit called objects.
+		EG: Real life eg - Car
+			Code eg - Car {
+							color,
+							weight,
+							model,
+							make,
+							year,
+						
+							function accelerate(),
+							function deaccelerate(),
+							function reverse()
+						}
+		
+Inheritance -> The child(sub) class inherits properties and methods from the parent(base) class.  It helps to eliminate reduntant code. Use 'extend' operator. Child class extends parent class.
+	EG: Real life eg - User -> parent class, Admin -> child class
+		Code eg - User {
+							id,
+							password,
+							
+							function login(),
+							function checkSPAM(),
+						}
+						
+					Admin extends User {
+						permissions,
+						
+						function addUser()
+						function deleteUser()
+					}
+	
+NOTE: A subclass does not inherit the private members of its parent class. However, if the superclass has public or protected methods for accessing its private fields, these can also be used by the subclass.
+		
+Polymorphism -> Polymorphism means "many forms", and it occurs when we have many classes that are related to each other by inheritance. A child class can override a method that it inherited from the parent class.
+	EG: Code eg - User {
+							id,
+							password,
+							
+							function login(){
+								// login logic
+							}
+						}
+						
+					Admin extends User {
+						permissions,
+						
+						function addUser(),
+						function deleteUser(),
+						function login(){
+							// different login logic
+						}
+					}
+					
+					Customer extends User {
+						posts,
+						
+						function addPost(),
+						function deletePost(),
+						function login(){
+							// different login logic
+						}
+					}
+					
+-------------------------
+
+OOP in JS:
+
+Prototype -> Every object in JavaScript has a built-in property, which is called its prototype. The prototype is itself an object. It contains properties and methods which can be accessed by the objects linked to it.
+
+Prototypical Inheritance -> A prototype objects contains properties and methods that all the objects that are linked to the prototype object has access to. This is called prototypical inheritance. It is used to build new types of objects based on existing ones.
+We try to look for a property/ mothod in the instance/object createad by new <Constructor Function>. If it is not found it will searched in the prototype of the object/instance.
+
+The prototype on object instance is available through Object.getPrototypeOf(object) or __proto__ property whereas prototype on constructors function is available through Object.prototype.
+
+Normal inheritance -> class inheriting from class
+Prototypical inheritance-> instance inheriting from a class
+
+Ways to create Objects:
+- Factory functions
+- Constructor functions
+- ES6 classes
+- Object.create()
+- object literal
+- singleton pattern
+
+--------------------------
+
+Factory Functions
+
+const createCircle = (radius) => {
+  return {
+    radius,
+    draw: function () {
+      console.log(this);
+      console.log("draw");
+    },
+  };
+};
+
+const circle = createCircle(1);
+circle.draw();
+
+--------------------------
+
+Constructor functions
+
+Constructor functions are called using new keyword.
+We can use function expressions as well as function declaration to create constructor functions.
+Arrow functions wont work here as there is no this keyword.
+Prototype property does not exist for an arrow function.
+
+const Person = function (firstName, birthyear) {
+  this.firstName = firstName;
+  this.birthyear = birthyear;
+
+  // Never use methods in constructor functions as all objects created bt the constructor function will have this method which can lead to performance issues.
+  // For solving the above issue we should use prototypeinheritance.
+};
+
+const john = new Person('John', 1993); // this keyword points to the newly created object
+console.log(john);
+
+--------------------------
+
+Prototypical Inheritance:
+
+const Person = function (firstName, birthyear) {
+  this.firstName = firstName;
+  this.birthyear = birthyear;
+};
+
+const john = new Person('John', 1993); // this keyword points to the newly created object
+console.log(john);
+
+// Never use methods in constructor functions as all objects created but the constructor function will have this method which can lead to performance issues.
+// For solving the above issue we should use prototype inheritance.
+
+// Solve above problem
+
+Person.prototype.calcAge = function () {
+  console.log(2022 - this.birthyear);
+};
+
+console.log(john.__proto__ === Person.prototype); // true
+console.log(Person.prototype.isPrototypeOf(john)); // true
+console.log(Object.prototype.isPrototypeOf(john)); // true
+console.log(Object.prototype.isPrototypeOf(Person)); // true
+console.log(Person.prototype.isPrototypeOf(Person)); // false
+
+//We can even set properties in prototype
+Person.prototype.species = 'human';
+console.log(john.species);
+
+console.log(john.hasOwnProperty('firstName')); //true
+console.log(john.hasOwnProperty('species')); //false
+
+
+x = {};
+y = {};
+x.__proto__ === y.__proto__ // true
+Object.getPrototypeOf(x) === Object.getPrototypeOf(y) // true
+
+--------------------------
+
+Property descriptors
+//  provide metadata about a property
+
+let person = {
+  name: "John",
+};
+
+const objectBase = Object.getPrototypeOf(person);
+const descriptor = Object.getOwnPropertyDescriptor(objectBase, "toString");
+console.log(descriptor);
+
+//configurable -> cannot delete the property/method
+//writable -> if true we can overwrite the property/method
+//enumerable -> if true, it is iterable, means it will show in Object.keys
+//value -> value of the method/property
+
+//by default all property descriptors are set to true
+
+let car = {
+  name: "swift",
+};
+
+Object.defineProperty(car, "name", {
+  writable: false,
+  enumerable: false,
+  configurable: false,
+  value: "sx4",
+});
+
+car.name = "Volvo";
+console.log(car.name); //sx4
+
+console.log(Object.keys(car)); // []
+
+delete car.name;
+console.log(car.name); // sx4
+
+console.log(car.name); // sx4
+
+---------------------------
+
+//ES6 classes
+// Classes are not hoisted even if they are class declaration
+// Classes are executed in strict mode
+
+//Class expression
+const PersonCl = class {};
+
+
+
+NOTE: Prototype inheritance works for objects created through Constructor functions and ES6 classes. It does not work for Object.create.
+
+// Prototype of Arrays
+
+const arr = [1, 2, 3, 2];
+
+console.log(arr.__proto__);
+console.log(arr.__proto__ === Array.prototype); // true
+console.log(arr.__proto__.__proto__ === Object.prototype); // true
+console.log(arr.__proto__.__proto__.__proto__); // null
+
+Array.prototype.unique = function () {
+  return [...new Set(this)];
+};
+console.log(arr.unique());
+
+// Prototype of DOM elements
+
+const h1 = document.querySelector('h1');
+console.dir(h1);
+
+//Prototype of Functions
+
+const fn = (a, b) => a + b;
+console.dir(fn);
+
+-----------------------------
+
+//ES6 classes
+
+// NOTE:
+// Methods in classes are added to the prototype property of the class
+// class and setters are added to the prototype property of the class
+// Classes are not hoisted
+//Classes are always executed in strict mode
+
+//Class expression
+// const PersonCl = class {};
+
+//Class declaration
+class PersonCl {
+  static name = 'Ram';
+	
+  constructor(firstName, birthyear) {
+    this.firstName = firstName;
+    this.birthyear = birthyear;
+  }
+
+  calcAge = function () {
+    console.log(2022 - this.birthyear);
+  };
+
+  get age() {
+    return 2022 - this.birthyear;
+  }
+
+  set addName(name) {
+    this.firstName = `${this.firstName} ${name}`;
+  }
+
+  static hey() {
+    console.log('hey');
+  }
+}
+
+const me = new PersonCl('John', 1992);
+console.log(me);
+me.calcAge();
+console.log(me.age);
+me.addName = 'Doe';
+console.log(me.firstName);
+console.log(me.__proto__ === PersonCl.prototype); // true
+console.log(PersonCl.prototype.isPrototypeOf(me)); // true
+PersonCl.hey();
+
+//Setters Getters
+
+/Note: If we have a setter for a property already defined in the constructor and we are setting that property inside the setter, then we will have to use the _ convention to set a new property and add the same in getter
+
+// For constructor functions
+const Circle = function (radius) {
+  this.radius = radius;
+
+  Object.defineProperty(this, "getRadius", {
+    get: () => {
+      return this.radius;
+    },
+
+    set: (radius) => {
+      this.radius = radius;
+    },
+  });
+};
+
+const c = new Circle(1);
+console.log(c.getRadius);
+c.getRadius = 20;
+console.log(c.getRadius);
+
+
+// For normal objects
+const obj = {
+  name: 'John',
+  age: 10,
+
+  get myAge() {
+    return this.age + 10;
+  },
+
+  set myAge(val) {
+    this.age = val;
+  },
+};
+
+console.log(obj.myAge);
+obj.myAge = 40;
+console.log(obj.age);
+
+//Static Methods
+
+// These are methods which are accessed via the constructor function rather than instances of the constructor.
+// EG - Array.isArray, Array.from
+
+Person.hey = function () {
+  console.log('hey');
+};
+
+Person.hey();
+PersonCl.hey();
+console.log(PersonCl.name);
+
+//Object.create
+
+//They dont have prototype property, no constructor fn, no new operator
+//We can manually set the prototype of the objects crateated to another object.
+
+const PersonProto = {
+  calcAge() {
+    console.log(2022 - this.birthyear);
+  },
+};
+
+const steve = Object.create(PersonProto);
+console.log(steve);
+steve.birthyear = 2002;
+steve.calcAge();
+
+------------------------------
+// Inheritance in JS
+
+// Using constructor functions
+const Student = function (firstName, birthyear, course) {
+  Person.call(this, firstName, birthyear);
+  this.course = course;
+};
+
+Student.prototype = Object.create(Person.prototype);
+Student.prototype.constructor = Student;
+
+Student.prototype.intro = function () {
+  console.log(this.firstName, this.birthyear, this.course);
+};
+
+const mike = new Student('Mike', '2017', 'CS');
+
+mike.intro();
+mike.calcAge();
+
+console.log(mike instanceof Student); // true
+console.log(mike instanceof Person); // true
+console.log(mike instanceof Object); // true
+
+ /////////////
+ 
+// Using classes
+class StudentCl extends PersonCl {
+  constructor(firstName, birthyear, course) {
+    // always needs to happen first
+    super(firstName, birthyear);
+    this.course = course;
+  }
+
+  intro() {
+    console.log(this.firstName, this.birthyear, this.course);
+  }
+}
+
+const mikeCl = new StudentCl('Mike', '2017', 'CS');
+
+mikeCl.intro();
+mikeCl.calcAge();
+
+console.log(mikeCl instanceof StudentCl); // true
+console.log(mikeCl instanceof PersonCl); // true
+console.log(mikeCl instanceof Object); // true
+
+// NOTE
+// If no extra parameters in subclass, we could omit the super call.
+// Automatically all the args passed to the child constructor will be passed to the parent.
+
+//////////
+
+// Using Object.create()
+
+const StudentProto = Object.create(PersonProto);
+StudentProto.init = function (firstName, birthyear, course) {
+  PersonProto.init.call(this, firstName, birthyear);
+  this.course = course;
+};
+const jay = Object.create(StudentProto);
+jay.init('Jay', 2005, 'MATHS');
+
+-----------------------
+
+// Access modifiers
+
+// Protected Member accessors
+
+//A protected member is accessible within the class (similar to private) and any object that inherits from it
+//Protected members are written with underscore
+//Protected methods are in the prototype as public methods.
+
+class DogProtected {
+  constructor(feet) {
+    this._feet = feet;
+  }
+
+  _getDistance() {
+    console.log('distance');
+  }
+}
+
+const dpro = new DogProtected(20);
+
+//Private member accessors
+
+// A private member is accessible within the class. Any inherited object will not have access to private members
+//private members are written with hash.
+// Private methods are outside of the prototype.
+
+class DogPrivate {
+  //public
+  name = 'Tom';
+
+  //private
+  #feet = 0;
+  #owner;
+
+  constructor(age, owner) {
+    this.age = age;
+    this.#owner = owner;
+  }
+
+  #getAge() {
+    return this.age;
+  }
+}
+
+const dpri = new DogPrivate(20, 'wow');
+
+----------------------
+
+// Symbols
+// Symbols are unique and immutable values that can be used as property keys in objects. They are useful for storing private data on objects.
+
+const _radius = Symbol();
+const _draw = Symbol();
+
+class Circle {
+  constructor(radius) {
+    this[_radius] = radius;
+  }
+
+  [_draw]() {
+    console.log("draw");
+  }
+
+  getDraw() {
+    this[_draw]();
+  }
+}
+
+const c = new Circle(10);
+c.getDraw();
+
+----------------------
+
+// WeakMaps
+// A WeakMap is a collection of key-value pairs for which the keys are weakly referenced. Keys must be objects and the values can be anything. They are useful for storing private data on objects
+
+const _radius = new WeakMap();
+const _draw = new WeakMap();
+class Circle {
+  constructor(radius) {
+    _radius.set(this, radius);
+    _draw.set(this, () => {
+      console.log(_radius.get(this));
+    });
+  }
+
+  getDraw() {
+    _draw.get(this)();
+  }
+}
+
+const c = new Circle(10);
+c.getDraw();

@@ -1,0 +1,27 @@
+function Person(first, last, age, eye) {
+  this.firstName = first;
+  this.lastName = last;
+  this.age = age;
+  this.eyeColor = eye;
+}
+var myFather = new Person("John", "Doe", 50, "blue");
+
+myFather.__proto__
+{constructor: ƒ}constructor: ƒ Person(first, last, age, eye)__proto__: Object
+myFather.__proto__.__proto__
+{constructor: ƒ, __defineGetter__: ƒ, __defineSetter__: ƒ, hasOwnProperty: ƒ, __lookupGetter__: ƒ, …}
+
+Object.prototype
+{constructor: ƒ, __defineGetter__: ƒ, __defineSetter__: ƒ, hasOwnProperty: ƒ, __lookupGetter__: ƒ, …}
+Person.prototype
+{constructor: ƒ}constructor: ƒ Person(first, last, age, eye)__proto__: Object
+
+Person.prototype.isPrototypeOf(myFather)
+true
+Object.prototype.isPrototypeOf(myFather)
+true
+Object.prototype.isPrototypeOf(Person)
+true
+
+Object.getPrototypeOf(myFather)
+{constructor: ƒ}constructor: ƒ Person(first, last, age, eye)__proto__: Object

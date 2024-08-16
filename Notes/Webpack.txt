@@ -1,0 +1,117 @@
+WEBPACK ->
+
+Webpack is a build automation tool.
+
+code splitting - chunks
+minification
+Hot module replacement
+bundling
+load specific modules needed to start the application
+tree shaking
+
+Live reloading reloads or refreshes the entire app when a file changes
+Hot reloading only refreshes the files that were changed without losing the state of the app
+
+
+
+Loaders -> Loaders in Webpack are modules that are used to transform files before they are added to the bundle. They are applied to files based on matching rules.
+Here's what loaders do:
+Transformation - you can use loaders to convert TypeScript to JavaScript, or SCSS to CSS.
+Modularization -  CSS files can be modularized using CSS modules.
+Optimization -  image files can be compressed and optimized for the web.
+
+Plugins ->  They perform a wide range of tasks during the bundling process. Unlike loaders, which operate on a per-file basis, plugins work at the bundle level and can perform tasks such as optimization, asset management.
+Some plugins are
+UglifyJsPlugin - minify and optimize JavaScript bundles, 
+html-webpack-plugin - copying assets such as css html and images to the output directory and inject references into HTML files.
+SplitChunksPlugin - help split the bundle into smaller chunks, improving performance by enabling lazy loading and reducing initial loading times.
+BundleAnalyzerPlugin - generate visualizations of the bundle contents,
+HotModuleReplacementPlugin - enable HMR
+
+Source Map: It maps our compiled code back to the original code.
+Remove source maps in React -> "GENERATE_SOURCEMAPS=false react-scripts build" in package.json or create a new .env file in root directory and add 1 line: GENERATE_SOURCEMAPS=false
+
+
+Sample webpack.config.js file:
+
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const BundleAnalyzerPlugin =
+  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+
+module.exports = {
+  mode: "development",
+  entry: {
+    bundle: path.resolve(__dirname, "src/index.js"),
+  },
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "[name].[contenthash].js",
+    clean: true,
+  },
+  devtool: "source-map",
+  devServer: {
+    static: {
+      directory: path.resolve(__dirname, "dist"),
+    },
+    port: 3000,
+    open: true,
+    hot: true,
+    compress: true,
+    historyApiFallback: true,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: ["style-loader", "css-loader", "sass-loader"],
+      },
+
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+        },
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        use: {
+          loader: "file-loader", // or 'url-loader' if you want to use data URLs
+          options: {
+            outputPath: "assets", // specify output directory
+            name: "[name].[ext]", // name of the output file
+          },
+        },
+      },
+    ],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: "Webpack-React",
+      filename: "index.html",
+      template: "public/index.html",
+    }),
+    new BundleAnalyzerPlugin(),
+  ],
+};
+
+
+---------------------------
+
+GULP and GRUNT
+
+These are task runners. Task runners are basically used to automate tasks in a development process. Some of these tasks include compiling Sass files, watching out for file changes, auto-prefixing.
+
+GRUNT->
+It performs one task at a time.
+Grunt makes use of temporary files.
+Slower than Gulp.
+SCSS -> CSS-> Temp File
+Temp-File- > Auto Prefixer -> Destination
+
+GULP - >
+It performs several tasks at a time.
+Gulp uses Node Streams.
+Faster.
+SCSS -> CSS-> Auto Prefixer -> Destination

@@ -1,0 +1,383 @@
+React -> It has component based architecture.
+
+
+
+React 18 new features:
+
+- new root API. use createRoot and createHydrate insead of render and hydrate.
+- Introduced new feature called concurrency - Concept involving state update prioritization. urgent updates can be prioritized over less urgent updates
+new Concurrent APIs: 
+ - useTransition()/startTransition() 
+ - useDeferredValue()
+
+- Automatic batch processing of states-  Batching is when React groups multiple state updates into a single re-render for better performance. Before React 18, we only batched updates inside React event handlers. Updates inside of promises, setTimeout, native event handlers, or any other event were not batched in React by default
+
+// After React 18 updates inside of timeouts, promises,
+// native event handlers or any other event are batched.
+
+function handleClick() {
+  setCount(c => c + 1);
+  setFlag(f => !f);
+  // React will only re-render once at the end (that's batching!)
+}
+
+setTimeout(() => {
+  setCount(c => c + 1);
+  setFlag(f => !f);
+  // React will only re-render once at the end (that's batching!)
+}, 1000);
+
+
+JSX -> It is just an XML-like extension that allows us to write HTML elements in JavaScript.
+
+React fragments -> A React fragment is a way to group multiple children elements without adding extra nodes to the DOM.
+
+{} -> curly braces are used to embed javascript expression inside JSX
+
+Keys are used in React to identify which items have been updated or deleted in a list. It is not a required property but is necessary to ensure good optimization.
+
+Synthetic events in React are wrappers around the browser's native events.
+
+Controlled components -> the form data is handled by the React component. There is 2 way binding. The input value is controlled by the state, and the state is updated via event handlers. This method allows for more control over the input elements.
+
+Uncontrolled components -> the form data is handled by the DOM itself rather than by the React component . Use refs to access the values of input elements directly. Suitable for simple forms where you don't need to respond to every change in form state.
+
+Webpack -> Module bundler. It bundles all the files along with its dependencies. This bundle is linked to the HTML file. In this approach, you use refs to access form values directly from the DOM. This method allows for less control over the input elements
+
+Props -> props (short for "properties") are a way to pass data from a parent component to a child component. Props are immutable & read-only, meaning that the child component cannot modify the props it receives from its parent.
+
+State: It is the single source of thruth. It is like a storage container. In React, "state" refers to an object that represents the current condition of a component. Whenever the state of a component changes, the component re-renders itself to reflect those changes in the user interface.
+State is mutable. However, it should be updated in a way that is considered immutable.
+We use functions like this.setState() (for class components) or useState hook (for functional components) to update the state. These functions do not mutate the state directly; instead, they create a new state object with the updated values, and React takes care of merging this new state with the existing state and triggering a re-render.
+Note:
+Re-renders only affect the component that owns the state + its descendants (if any). 
+
+There are two main types of state: 
+- Application state: Application state refers to the overall state of the entire application. It typically represents data that is shared among multiple components. Application state is often managed by a global state management solution, such as React's Context API, Redux.
+
+- Component state: Component state, also known as local state or internal state, refers to the state that is specific to a particular component. Component state is managed using the useState hook (in functional components) or the setState method (in class components).
+
+setState() -> Update state without rerendering manually.
+
+Way 1 of setState-> 
+
+this.setState(
+        {
+          stars: this.state.stars + 0.5,
+        },
+        () => console.log(this.state.stars)
+      );
+
+Way 2 of setState-> 
+
+this.setState((prevState) => ({
+        stars: prevState.stars - 0.5,
+      }));
+	  
+Batching in setState -> If multiple setStates are grouped together then:
+	- in way 1 the last set state is considered
+	- in way 2 all the set states are considered as it has previousState argument
+	
+	Even though there are multiple setStates the ui gets re rendered only once in both the ways.
+	
+Lifting State Up in React - When several components need to share the same changing data then it is recommended to lift the shared state up to their closest common ancestor instead of maintaining local state in both of the child components.
+
+Props -> props stands for properties. It is used to pass data from the parent component to the child component.
+
+Children prop -> Children is a prop that allows you to pass components as data to other components, just like any other prop you use.
+
+
+Styled Components:
+	- CSS in JS
+	- It scopes styles to the targetted element.
+	- Deletion of unused styles becomes very easy
+
+CSS Modules:
+	- Styles defined in a CSS Module are local to the component. They are not global.
+	
+
+---------------
+
+Life cycle methods:
+
+Side effects -> Side effects are actions which are unpredictable because the actions involve interaction with the browser(outer world). These are -> browser APIs, API calls, DOM methods, subscribing to services. 
+
+Pure functions -> A pure function is a function that always returns the same output given the same input and has no side effects.
+i.e., it doesn't modify any variables outside of its scope, it doesn't mutate its input arguments, and it doesn't have any I/O operations such as reading from or writing to a file or a database
+Example: 
+const add = (a, b) => a+b; // A pure function adding two integers passed in it
+JavaScript libraries and frameworks such as Redux and Lodash emphasize using pure functions.
+
+Impure functions -> An impure function is a function that has side effects.
+Example:
+const message = 'Hi ! ';
+function myMessage(value) {
+	return `${message} ${value}`
+}
+console.log(myMessage('Aayushi'));
+
+In the above code, the result the function returns is dependent on the variable that is not declared inside the function. That's why this is an impure function.
+
+Lifecycle Methods:
+
+Mounting Phase:
+	- constructor() - Automatically called when the class in initialized. It should not have any side effects. The state should directly be set. Not use setState();
+	- static getDerivedStateFromProps(nextProps,prevState) - It is a static method which means you do not have access to this inside of it. The purpose of getDerivedStateFromProps is to allow a component to update its state based on changes in props. If it detects a change that requires updating the state, it will return an object with the updated state. If no update is needed, it should return null. It should not have any side effects. Not use setState();
+	- render() - returns JSX. It is a pure function. It should not have any side effects. Not use setState() as it will go into an infinite loop.;
+	- componentDidMount() - Called only ONCE after component mount. This is where side effects and setState() is written. Use this method to call APIs.
+
+Updating Phase:
+	- static getDerivedStateFromProps(nextProps, nextState) - Explation given above.
+	- shouldComponentUpdate(nextProps, nextState) - Returns boolean determining whether a component should update or not. Allows you to optimize the performance of your components by controlling whether a component should re-render when its props or state change. Check if the new props or state are different from the current props or state. By default, it returns true.  It should not have any side effects. Not use setState();
+	- render() - Explation given above.
+	- getSnapShotBeforeUpdate(prevProps, prevState) - It returns a value called snapshot. This is called just before React syncs the real DOM with the Virtual DOM. It allows you to capture some information from the DOM just before it changes. This pattern can be useful for maintaining scroll positions, especially in dynamic lists where items are being added or removed. This method must return either null or a value. If a value is returned, it will be passed as the third parameter to the componentDidUpdate() method. It should not have any side effects. Not use setState();
+	- componentDidUpdate(prevProps, prevState, snapshot) - It is called after React has synced the virtual DOM with the real DOM. We can perform side effects and set state here. It gets called at EACH render cycle.
+
+Un-mounting Phase:
+	- componentWillUnmount() - It gets called just before component gets destroyed or unmmounted. It should not have any side effects. Not use setState(). Main use of this method is to clear our timers or unsubscribe to the services.
+
+Error Handling:
+
+	- static getDerivedStateFromError(error) - It is used to update the state of the error boundary component if any error occurs in it's child component before the error is passed to componentDidCatch.  It is a static method which means you do not have access to this inside of it. It will return an object with the updated state. If no error is found, it should return null.
+	- componentDidCatch(error,info) - It is used to catch the error if any error occurs in the error boundary's child component. It has access to the actual error and information about the error.
+
+Error Boundary -> It is a component that catches JavaScript errors anywhere in its child components, logs those errors, and displays a fallback UI instead of crashing the entire application. A component is said to be error boundary if it contains either of the error handling life cycle methods or both of them. 
+
+--------------------
+
+Hooks:
+
+Hooks are functions that let you “hook into” React state and lifecycle features from function components. We can make use of as many hooks as many times we want in functional component.
+Don’t call Hooks inside loops, conditions, or nested functions.
+
+useState() - It is a react hook that allows functional components to manage state.
+	const [name, setName] = useState('Ram');
+	
+useEffect(callback, dependencies) - It is a react hook which lets us to perform any side effects in function components. It runs asynchronously. Which means while react paints the webside, the useeffect can run in the backgound asynchronously without blocking the UI.
+	- useEffect(callback) - The effect runs after every render, including the initial render, and after every update.
+	- useEffect(callback, []) - The effect runs only once after the initial render, similar to componentDidMount in class components.
+	- useEffect(callback, [dependencies]) - The effect runs after the initial render and after every update, but only if one of the dependencies has changed since the last render.
+
+	It has a a cleanup function that runs when the component is unmounted. First unmounting functions are called then after, mounting happens. Hence, First all the unmounts from all the useeffects are called then the console.logs inside useEffects are called.
+	
+useLayoutEffect() -> It runs synchronously b/w when React calculates our DOM and when React paints it out to the screen. This is mostly used when we want to change the layout of some elements before they are being rendered on the screen.
+
+useRef(initialValue) - useRef is commonly used for accessing and interacting with DOM elements, do not trigger re-renders when its value changes, and persisting values between renders. The useRef() hook returns a mutable ref object, which includes a .current property. This .current property is initialized with the initialValue that you provide. When you write ref={myRef} the .current property is set to the reference of the DOM element to which the ref is attached.
+
+
+useReducer - This hook is used when the state is manipulated/changed by multiple event handlers. It lets you move the state update logic from event handlers into a single function outside of your component. 
+
+const [state, dispatch] = useReducer(reducer, initialArg, init?) - It is majorly used when the state is manipulated by multiple event handlers.
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'INCREMENT':
+      return { count: state.count + 1 };
+    case 'DECREMENT':
+      return { count: state.count - 1 };
+    default:
+      return state;
+  }
+};
+
+
+useMemo() - is a React Hook that lets you cache the result of expensive calculations between re-renders.
+const number = useMemo(() => numbers.find((el) => el.isMagical), [numbers]);
+
+useCallback() - is a React Hook that lets you cache an expensive function definition between re-renders.
+const myFunc = useCallback(() => {return "another" + count}, [count])
+
+
+
+useTransition()/startTransition() -> New in React 18 . Wrap a state update with useTransition() or startTransition() to let react know that some state update might be handled with lower priority.
+const [isPending, startTransition] = useTransition();
+isPending - is a boolean value which tells us that some state update with a lower priority is pending execution. This can be used to show some indicator. For example : greyed out value.
+startTransition() - is a function that is used to wrap a state update to let react know that some state update might be handled with lower priority.
+	example -> startTransition(() => setCount(c => c+1));
+
+useDeferredValue() -> New in React 18 . let react know to use an older version of that value until a new version of that value is received instead of kepping the UI waiting until the new value is available.
+const deferredCount = useDeferredValue(count);
+
+useTransition() is used when we have control over the state update.
+useDeferredValue() is used when we don't have control over the state update.
+
+
+Custom hooks -  It helps to share the stateful logic between different components. It allows you to encapsulate common functionality into reusable functions. They are a great way to make your code more scalable, reusable, and Separation of concerns. They start with the use keyword. They dont return any JSX. We can even include once custom hook inside another.
+Examples of custom hooks: 
+	- useTheme - set dark/light theme of app
+	- useFetch - fetch data from API and set states of error & loading.
+	- useLocalStorage - getting and setting of local storage functionality
+
+--------------------------
+
+React router :
+
+Data API -> While routing from one page to another we can pass the data.
+
+Using Data API ->
+createBrowserRouter: It uses the full URL instead of the hash urls (#this/stuff). Suitable for SEO.
+createHashRouter: If for some reason you can't use the full URL, createHashRouter is the next best thing.
+
+NOT Using Data API ->
+BrowserRouter
+HashRouter
+
+For testing we can use  -> createMemoryRouter
+
+ErrorElement -> Finds errors in the level in which it is written(siblings) and its children routes.
+Whenever an error occurs in a route it bubbles up until it finds an errorElement. Hence it's better to write at least one errorElement in the root route.
+useRouteError -> get value of the error of the component
+
+Wildcard (*) is triggered when there is a mismatch in route path params
+ErrorElement is triggered when there is an error in the page itself and is used to show a proper ui. Specifically when loaders or actions throw any error.
+
+useNavigate -> hook to navigate programatically. It's useful for scenarios where you need to trigger navigation based on user interactions.
+
+index route->  When we have nested routes and we want a route to be shown at the parent url we can use index route.
+
+useOutletContext -> child routes to access data or state provided by parent routes in context.
+context of <Outlet /> -> parent route passes any data to the child route
+
+Navigate component - It allows you to navigate to a different route in response to certain events or conditions.
+replace={true} -> the current entry in the history stack should be replaced with the new location. This prevents the current location from being stored in the browser's history.
+
+Loaders -> Load data onto a component before it renders.
+useLoaderData -> get data of the loader in the component in which the loader is registered.
+
+actions -> An "action" refers to the operations that can be performed on the router. Actions are called whenever the app sends a non-get submission ("post", "put", "patch", "delete") to your route. 
+useActionData -> get data of the action. The most common use-case for this hook is form validation errors. If the form isn't right, you can return the errors and let the user try again:
+
+useLocation -> returns the current location object, which represents where the app is currently rendered.
+
+useParams() -> used to get path Params.
+
+useSearchParams -> hook to get and set search params;
+searchParams.get('id')-> get value of query param with key as "id"
+Setting query params->
+ const [searchParams, setSearchParams] = useSearchParams();
+ 
+setSearchParams((params) => {
+      const newParams = new URLSearchParams(params);
+      newParams.set("name", "riya");
+      newParams.set("age", 20);
+      return newParams;
+    });
+	
+---------------------------------------------
+Context API
+
+Prop drilling: Refers to the process of passing data from one component to another by threading it through all the intermediate components in the hierarchy, even if those intermediate components don't directly use the data themselves. 
+Disadvantages :
+	- Storage issue. The state data of each component is stored in the browser and the browser has limited storage capability.
+	- Predictbility of data - While passing data through multiple components. There may be a component which might modify the data. Hence it becomes very difficult to predict which data is correct and which data is not.
+
+
+Context API / Context: It is a feature in React that provides a way to share data between components without having to explicitly pass props through every level of the component tree. It is used to mitigate prop drilling. It provides a way to share values like themes, language, user authentication status, or any kind of global data between components without having to explicitly pass props through every level of the component tree.
+When a component that consumes the context by subscribing to it using useContext hook or Context.Consumer. React will re-render that component whenever the context value changes.
+
+It has 3 steps:
+Create Context: export context = createContext(defaultValue?)
+	It takes an optional default value as an argument, which is only used when a component does not have a matching Provider above it in the tree.
+
+Provide Context: It is used to provide the context value to the tree below it. It takes a value prop which is the value we want to provide the the enclosed component and it's children. <context.Provider value={<value>}></context.Provider>
+
+Consume Context: Consume the data provided by the Provider using the 'Consumer'component or the useContext() hook.
+Using useContext() hook:
+	const color = useContext(context);
+	return <span style={{ color }}>{color}</span>;
+Using Consumer component:
+	<context.Consumer>
+	    {(color) => <span style={{ color }}>Colour: {color}</span>}
+	  </context.Consumer>
+	  
+Notes: 
+- Only the components that are consuming the context via the useContext hook will rerender when the context changes.
+- React searches for the closest Provider above the component where it's being called. It doesn't consider providers within the component where useContext() is called.
+	  
+Custom Provider - > component which acts as a provider. It makes use of the default provider.
+
+Disadvantages of Context - API:
+- Designed for static content. Not useful for dynamic data.
+- Rerenders all components subscribed to the context even though that component does not require the changed value.
+- Not good in performance while managing multipe contexts and it's component linkages.
+- Not scalable.
+- Difficult to debug.
+
+
+
+--------------------------------------------
+
+Redux:
+It is a state management library. 
+Redux uses publisher-subscriber pattern.
+It follows flux architecture.
+
+Currying: Currying in JavaScript refers to the process of transforming a function with multiple arguments into a sequence of nested unary functions, each taking a single argument.
+
+React Flux architecture - It states that there should not be bidirectional flow of data b/w components. The flow of data should be unidirectional. It helps the components to work independantly. There is no sharing of data directly b/w components but still they get each other's data using redux.
+
+Redux Architecture:
+
+- Store: Stores and manages the state.
+- Selectors - Link b/w store and components. Components can receive data only from the store through selectors.
+- Actions - these are operations that we want to perform on the application state to update the state. Actions are plain JavaScript objects with a type property that indicates the type of action being performed on the state and an optional property called payload. 
+- Dispatcher - These actions are sent from the component to the reducer using dispatcher.
+- Reducer - Whatever state is present in the store, it can only be modified by the reducer. It is a js pure function which takes in state & actions and returns a new state based on that action type.
+
+It should only be used when we have 
+a large application.
+when there are multiple components which are sharing the state
+
+Why to use redux
+separation of concerns - keeping the state management logic decoupled from ui logic
+helps to debug the state
+good when want to scale the application
+
+
+Redux can be used outside of react, in vanilla JS.
+There can be multiple stores in a Redux application, but it can make the state management inconsistent and un-manageable.
+We should not use store.Get state in our components because it is not a good practice to import store in every component. Hence use useSelector hook.
+const todos = useSelector((state) => state.todos) // here the state variabe is similar to store.getState().
+
+react-redux library is different from redux library.
+react-redux provides:
+Provider - it helps us to provide a scope of the store in our react application
+useSelector & useDispatch hooks - it helps to access the store and send actions from the component to the reducer.
+
+If our application has more than one features/modules we should use multiple reducers. This helps to follow SRP (Single responsibility principle).
+
+React-redux: It lets your React components read data from a Redux store, and dispatch actions to the store to update state.
+
+Drawback of redux:
+- Hard to debug/test
+
+Redux toolkit:
+It is a library built on top of redux which helps to implement redux with minimal code. It's also easy to debug/test.
+
+State slice -> it is a part of the redux state tree that represents a specific feature/module. It is a subset of the app's overall state.
+
+Create a react app with inbuild redux toolkit -> npm create-react app my-app --template <redux/redux-typescript>
+
+-------------------------------------------
+
+React Internationalization:
+
+
+
+
+-------------------------------------------
+
+Optimize React:
+
+- Lazy loading / code splitting - Since we have a reporting tool, it has multiple widgets. SO the landing page becomes heavy. Hence we can lazy load different widgets
+- Loaders in routes - prefetch data before navigating to that route
+- use indexed db for caching logos
+- shoing a skeleton ui whilw the components are suspended
+- throttling & debouncing
+- useMemo() hook - used when we perform complex calculations
+- useCallback() hook
+- useTransition() & useDeferredValue()
+- react fragments - prevents addition of extra dom node
+
+
+
+

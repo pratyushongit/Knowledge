@@ -1,0 +1,18 @@
+Security Issues
+- XSS -> Cross-site scripting (XSS) enables attackers to inject malicious code into web pages. attackers can trick you into inserting a <script> tag in the DOM, they can run arbitrary code on your website. 
+	Resolution: CSP Headers, Automatic Dom Sanitising using libraries like dompurify, 
+
+- XSRF -> Cross site resource forgery - One has their banking site open. Attacker sends a malicious email that time and the user clicks on it. The attacker gets our banking details through the malicious website
+	Resolution: Implement the same origin policy in browsers. Ensure that a user request originates from the real application & not from a different site, XSRF Token, Whitelist Domains
+
+- XSSI -> Cross-site script inclusion - It's a security vulnerability that occurs when a web application includes external scripts (such as JavaScript) without proper validation or sanitization. 
+	Resolution: CSP headers, Server adds special characters JSON response. Http client identifies these special characters, removes these characters and parses the API.
+
+- DoS -> targeted machine is overwhelmed with requests from a single machine
+	Resolution: Firewall, DDoS prevention software, increase bandwidth
+
+- DDoS -> targeted machine is overwhelmed with requests from machines spread across multiple locations
+	Resolution: Same as above
+
+What is Content-Security-Policy?
+Content-Security-Policy is the name of a HTTP response header that modern browsers use to enhance the security of the document (or web page). The Content-Security-Policy header allows you to restrict which resources (such as JavaScript, CSS, Images, etc.) can be loaded, and the URLs that they can be loaded from.

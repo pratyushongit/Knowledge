@@ -1,0 +1,20 @@
+SASS:
+
+It is a CSS preprocesser. It lets us use features which are not present in CSS.
+
+2 types of extentensions
+
+.scss -> has curly braces
+.sass -> uses indentation
+
+Advantages:
+
+ - Variables - has $ prefix
+ - Nesting
+ - Modules - use underscore before the file name. Scss compiler will then skip the file. Then we can import it in another Sass file. Included using @use<module name>;
+ - Functions and Mixins - Write mixins using @mixin and include them in Styles as @include<mixin name>
+ - Inheritance - extend scss styles using @extend<style selector>
+ - Use of operators to do calculations.
+ - We can use if and if else statements with the help of @if @else if written inside mixins and then including the mixin whereever needed and pass arguments to them
+ 
+ 

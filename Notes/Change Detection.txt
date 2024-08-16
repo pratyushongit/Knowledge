@@ -1,0 +1,21 @@
+Change Detection -> It is the process of synchronizing the component's model and view. Change detection is triggered whenever there is a change in the component's state. 
+
+The application’s state can change when there is an async operation namely -
+- Events
+- Timers (setTimeout, setInterval)
+- XHR, HTTP requests
+
+2 change detection strategies - 
+
+Default - This is the default change detection strategy. The change detection is triggered at the root component and then it traverses across all it's child components even though there are no changes in any of the components. If there is a change in any property of the template, it updates the DOM making the view in sync with the model. It affects the performance of an application by running multiple unnecessary change detection cycle.  
+
+
+OnPush - OnPush works by comparing the input references of the component. The OnPush change detector will only get triggered when there is a change in the reference of the Input object.
+
+markForCheck - It is used along with OnPush. In On push strategy change detection works when there is a change in the reference of the input element and not when there is a change in the value. Hence, this method markForCheck detects changes even when there is a change in the value.
+
+detectChanges - It is used to run change detection once from the current component to all of it's decendants.
+
+detach - By calling this method you can pluck out a component from the tree of the current component to its descendants. It would'nt detect any changes. Whenever there is a need for running change detection on the component you could call detectChanges or markForCheck method.
+
+reattach - We can reattach a change detector to a detached component so that it can resume detecting changes. 

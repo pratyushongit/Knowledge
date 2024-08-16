@@ -1,0 +1,197 @@
+DOM MANIPULATION
+
+//Selecting elements
+
+console.log(document.documentElement);
+console.log(document.head);
+console.log(document.body);
+
+const header = document.querySelector('.header');
+const allSections = document.querySelectorAll('section'); // reutrns Nodelist
+document.getElementById('section--1');
+const allButtons = document.getElementsByTagName('button'); // returns collection
+document.getElementsByClassName('btn'); // returns collection
+
+//Difference b/w Nodelist & Collection
+
+// Nodelist -> It is not subscribed to the changes in the list. If an element is deleted from the list it still shows the previous original list.
+// Collection - > It is not subscribed to the changes in the list. If an element is deleted from the list it shows the updated list.
+
+//Creating and inserting elements
+
+//.insertAdjacentHTML();
+
+const message = document.createElement('div');
+message.classList.add('cookie-message');
+message.innerHTML = `We use cookies. <button class="btn btn--close-cookie">Got it!</button>`;
+header.prepend(message); // adds message as first child of header
+header.append(message); // adds message as last child of header
+header.append(message.cloneNode(true));
+header.before(message); // adds message before header element as a sibling
+header.after(message); // adds message after header element as a sibling
+
+//Delete elements
+document.querySelector('.btn--close-cookie').addEventListener('click', () => {
+  message.parentElement.removeChild(message); // old way
+  message.remove(); // new way
+});
+
+//Adding styles
+
+message.style.backgroundColor = '#37383d';
+message.style.width = '120%';
+
+console.log(message.style.backgroundColor); // returns inline styles only
+console.log(message.style.color); // does not return anything as it is not inline style
+console.log(getComputedStyle(message).color); // returns the value
+console.log(getComputedStyle(message).height); // returns the value even if we have not set it anywhere
+
+message.style.height = Number.parseFloat(getComputedStyle(message).height, 10) + 30 + 'px';
+
+// Custom properties or CSS variables
+
+:root {
+  --color-primary: #5ec576;
+  --gradient-secondary: linear-gradient(to top left, #ffb003, #ffcb03);
+}
+
+document.documentElement.style.setProperty('--color-primary', 'orangered');
+message.style.setProperty('backgroundColor', 'yellow');
+
+//Attributes
+
+const logo = document.querySelector('.nav__logo');
+console.log(logo.src); // gives absolute URL
+console.log(logo.alt);
+logo.alt = 'Minimalist logo';
+console.log(logo.alt);
+console.log(logo.className);
+console.log(logo.getAttribute('src')); // gives relative URL
+
+logo.setAttribute('alt', 'Different alt text');
+console.log(logo.alt);
+
+const link = document.querySelector('.twitter-link');
+console.log(link.href); // gives absolute URL
+console.log(link.getAttribute('href')); // gives relative URL
+
+//Data attributes
+
+<img src="img/logo.png" data-version-number="3.0"/>
+
+console.log(logo.dataset.versionNumber);
+
+//Classes
+
+console.log(logo.classList.add('c', 'j'));
+console.log(logo.classList.remove('c', 'j'));
+console.log(logo.classList.toggle('c'));
+console.log(logo.classList.contains('c'));
+logo.classList = 'new'; //dont use this as it will overwrite the existing classes
+  
+//Smooth scrolling
+
+btnLearnMore.addEventListener('click', _ => {
+  const s1coords = section1.getBoundingClientRect();
+  window.scrollTo({
+    left: s1coords.left + window.scrollX,
+    top: s1coords.top + window.scrollY,
+    behavior: 'smooth',
+  });
+
+  //OR
+  
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
+
+
+// Event Delegation
+
+// Advantages:
+// Instead of adding event listeners for numerous links inside an element. Instead add event listener to the parent element
+// Used for adding event listeners to elements which are not present at runtime
+
+document.querySelector('.nav__links').addEventListener('click', e => {
+  e.preventDefault();
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+//DOM Traversal
+
+const h1 = document.querySelector('h1');
+
+//Going downwards: child
+console.log(h1.querySelectorAll('.highlight'));
+console.log(h1.children); // returns collection
+h1.firstElementChild.style.color = 'white';
+h1.lastElementChild.style.color = 'orangered';
+
+//Going upwards: parent
+console.log(h1.parentElement); // returns direct parent
+h1.closest('.header').style.background = 'var(--gradient-secondary)'; // returns header element closest to h1
+h1.closest('h1').style.background = 'var(--gradient-secondary)'; // returns the same element itself
+
+// Going sideways: siblings
+console.log(h1.previousElementSibling); // null
+console.log(h1.nextElementSibling); // h4
+console.log(h1.parentElement.children); // get all siblings by moving to parent and select all children
+
+
+NOTE: difference b/w mouseenter and mouse over -> Mouseenter does not bubble, mouseover bubbles.
+NOTE: Use function.bind(argument) to pass argument to event handler. Also use simple function definition and not arrow functions.
+
+
+// Intersection Observer API
+// provides a way to asynchronously observe changes in the intersection of a target element with an ancestor element or with a top-level document's viewport.
+// Used for lazy loading images, infinite scrolling
+
+
+const navHeight = nav.getBoundingClientRect().height;
+
+const obsCallback = entries => {
+  const [entry] = entries;
+  console.log(entry);
+  entry.isIntersecting
+    ? nav.classList.remove('sticky')
+    : nav.classList.add('sticky');
+};
+
+const obsOptions = {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`,
+};
+
+const observer = new IntersectionObserver(obsCallback, obsOptions);
+observer.observe(header);
+
+
+//DOM Lifecycle
+
+// DOMContentLoaded
+// Triggers after HTML is completely parsed and scripts are loaded.
+// Does not wait for  images and other external resources to be loaded
+// Triggers on document
+document.addEventListener('DOMContentLoaded', () => {});
+
+//load
+// Triggers after HTML is completely parsed and scripts, images and other external resources are loaded.
+// Triggers on window
+window.addEventListener('load', () => {});
+
+//beforeunload
+// Triggers before a person is about to leave a page.
+// Used in a situation when data cam be lost like in a form
+// for eg: when user clicks on close tab of browser
+// Triggers on window
+window.addEventListener('beforeunload', e => {
+  e.preventDefault();
+});
+
+
+//Get data from a form => const data = [...new FormData(the form html element)];
+
+NOTE: For addeventlistner callbacks use function() syntax instead of arrow functions if using this inside callback

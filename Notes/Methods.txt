@@ -1,0 +1,401 @@
+// STRINGS
+
+const str = 'Hi! My name is John';
+
+// Strings are immutable.
+// String methods doesnot change the original string.
+// They always return a new string
+// String methods are case sensitive
+
+console.log(str.charAt(4)); // character at a certain position
+console.log(str.at(4)); // character at a certain position
+console.log(str[4]); // character at a a certain position
+console.log(str.length); // length of string
+console.log(str.indexOf('i')); // first occurrence of the string
+console.log(str.lastIndexOf('i')); // last occurrence of the string
+console.log(str.indexOf('name')); // first occurrence of the string
+console.log(str.slice(0, 3)); // Hi! || Length of extracted string = end - beginning
+console.log(str.slice(4)); // My name is John
+console.log(str.slice(0, str.indexOf(' '))); // extract first word using slice
+console.log(str.slice(str.lastIndexOf(' ') + 1)); // extract last word using slice
+console.log(str.slice(-2)); // hn || start extracting from the end
+console.log(str.slice(-1)); // 'n' -> Get last character of string
+console.log(str.slice(1, -2)); // i! My name is Jo
+console.log(str.slice(-2, 1)); // Empty string -> ''
+
+
+console.log(str.toUpperCase()); // to uppercase
+console.log(str.toLowerCase()); // to lowercase
+console.log(str.trim()); // to trim the start and end of string
+console.log(str.trimStart()); // to trim the start of string
+console.log(str.trimEnd()); // to trim the end of string
+console.log(str.replace('!', '!!!!!!')); // replace first occurrence from left with right
+console.log(str.replaceAll('n', 'N')); // replace all occurrences from left with right
+console.log(str.replaceAll(/name/g, 'N')); // using regex to replace all occurrences
+
+console.log(str.startsWith('Hi')); // check if it starts with a specific string
+console.log(str.endsWith('hn')); // check if it ends with a specific string
+console.log(str.includes('names')); // check if it contains the string
+
+console.log(str.split(' ')); // splits string to an array
+console.log(['Hello', 'Mohan'].join()); // joins arrays to a string
+console.log(str.padStart(25, '~')); // add some characters to the beginning of the string till the desired length is reached
+console.log(str.padEnd(25, '~')); // add some characters to the end of the string till the desired length is reached
+console.log(str.padStart(25, '~').padEnd(30, '~')); // add some characters to the start & end of the string till the desired length is reached
+console.log((str + ', ').repeat(5)); // repeat a string for a defined number and form a new long string
+
+console.log(str.concat('wwee', 'ooff')); // concatenate strings
+console.log(str.subst(4, 6)); // substring strings
+
+--------------
+
+//FUNCTIONS
+
+//Callbacks and Higher order functions
+
+const callback = (a, b) => a + b;
+
+const hof = (a, b, cb) => cb(a, b);
+console.log(hof(2, 3, callback));
+
+
+Closure -> const hof = val => elem => console.log('wow' + val + elem);
+
+
+
+//Call Apply and Bind
+
+const person = {
+  name: 'Rohan',
+  age: 20,
+  calAge(data) {
+    this.fullText = `${this.name} ${this.age} ${data}`;
+  },
+};
+
+const mary = {
+  name: 'Mary',
+  age: 40,
+};
+
+person.calAge.call(mary, 'donuts1');
+person.calAge.call(person, 'donuts2');
+
+person.calAge.apply(person, ['donuts3']);
+person.calAge.apply(mary, ['donuts4']);
+
+const personFunc = person.calAge.bind(person);
+personFunc('donut5');
+
+const maryFunc = person.calAge.bind(mary, 'donut6');
+maryFunc();
+
+console.log(person.fullText);
+console.log(mary.fullText);
+
+
+
+---------------
+
+//ARRAYS
+
+// Arrays are mutable.
+
+const arr = ['a', 'b', 'c', 'd', 'e'];
+
+console.log(Array(5)); // [empty × 5]
+console.log(Array(5, 4, 5, 6, 7)); //  [5, 4, 5, 6, 7]
+
+// SLICE -> Does not modify original array.
+
+console.log(arr.slice(2)); // ['c', 'd', 'e']
+console.log(arr.slice(2, 4)); // ['c', 'd']
+console.log(arr.slice(-32)); // ['c', 'd', 'e']
+console.log(arr.slice(-1)); // ['e'] -> Get last element of array
+console.log(arr.slice(1, -2)); // ['b', 'c']
+console.log(arr.slice()); // Shallow copy of the array
+
+// SPLICE -> Modifies original array
+
+// console.log(arr.splice(2)); // Final Array -> ['a', 'b']
+// console.log(arr.splice(-1)); // Final Array -> ['a', 'b', 'c', 'd']
+// console.log(arr.splice(1, 2)); // Final Array -> ['a', 'd', 'e']
+// console.log(arr.splice(1, 2, 'ins1', 'ins2')); // Final Array -> ['a', 'ins1', 'ins2', 'd', 'e']
+
+
+//MAP -> Does not mutate the original array
+
+console.log(arr.map(el => el.toUpperCase()));  // ['A', 'B', 'C', 'D', 'E']
+
+
+//FILTER -> Does not mutate the original array
+
+console.log(arr.filter(el => el!=='c')); // ['a', 'b', 'd', 'e'];
+
+// REDUCE -> Does not mutate the original array
+
+Sum of elements in an array -> 
+const arr1 = [1, 2, -3, 4, -5, 6];
+console.log(arr1.reduce((prev, curr) => prev + curr, 0));
+
+Reduce array to an object->
+
+arr1.reduce(
+  (p, c) =>
+    c > -1
+      ? { ...p, deposits: p.deposits + c }
+      : { ...p, withdrawals: p.withdrawals + c },
+  {
+    deposits: 0,
+    withdrawals: 0,
+  }
+);
+//{
+	deposits: 9,
+	withdrawals: 8,
+}
+
+
+// REVERSE -> Modifies original array
+
+console.log(arr.reverse()); // Final Array -> ['e', 'd', 'c', 'b', 'a']
+
+// toReverse() -> doesnont mutate the original array
+
+
+
+// CONCAT -> Does not mutate the original array
+
+console.log(arr.concat(['1', '2'], ['x', 'y', 'z'])); // ['e', 'd', 'c', 'b', 'a', '1', '2', 'x', 'y', 'z']
+
+// JOIN -> Does not mutate the original array
+
+console.log(arr.join('-')); // e-d-c-b-a
+
+//  AT -> Does not mutate the original array
+
+console.log(arr.at(0)); // 'a'
+console.log(arr.at(-1)); // 'e'
+
+console.log(arr.indexOf('d')); // first occurrence of the value
+console.log(arr.lastIndexOf('d')); // last occurrence of the value
+console.log(arr.includes('c')); // check if it contains the string
+
+//FLAT -> Doesnot mutate the original array
+
+console.log(arr.flat(n)); // flatten array, where n is the level of flattening
+console.log(arr.flatMap()); // use flat() on an array after using map()
+
+// SORT -> Mutates the array
+// Time complexity -> O(nlogn)
+
+const arr = ['John', 'Ram', 'Anne', 'Julia'];
+console.log(arr.sort());
+
+const arr1 = [200, 450, -400, 3000, -650, -130, 70, 1300];
+console.log(arr1.sort()); // [-130, -400, -650, 1300, 200, 3000, 450, 70]
+//to fix this
+
+// Keep order -> if returned value is negative
+// Switch order -> if returned value is positive
+// Ascending
+arr1.sort((a, b) => (a > b ? 1 : -1));
+// or
+arr1.sort((a, b) => a - b);
+console.log(arr1);
+
+// Keep order -> if returned value is positive
+// Switch order -> if returned value is negative
+// Descending
+arr1.sort((a, b) => (a > b ? -1 : 1));
+// or
+arr1.sort((a, b) => b - a);
+console.log(arr1);
+
+// toSorted() -> doesnont mutate the original array
+
+
+// FILL -> Mutates the original array
+console.log(Array(7).fill('a')); // ['a', 'a', 'a', 'a', 'a', 'a', 'a']
+console.log(Array(7).fill('a', 2, 5)); // [empty × 2, 'a', 'a', 'a', empty × 2]
+console.log(Array(5, 4, 5, 6, 7).fill('a', 1, 4)); // [5, 'a', 'a', 'a', 7]
+
+//FROM
+
+const x = Array.from({ length: 100 }, () => Math.round(Math.random() * 6));
+console.log(x); // [7, 7, 7, 7, 7, 7, 7]
+
+const y = Array.from({ length: 7 }, (_, i) => i + 1);
+console.log(y); // [1, 2, 3, 4, 5, 6, 7]
+
+const maps = new Map([
+  ['name', 'John'],
+  [1, 20],
+  [false, 'wow'],
+]);
+
+console.log();
+
+------------
+
+//NUMBERS
+
+console.log(+'23'); // Converts string to number
+console.log(Number.parseInt('23', 10)); // Converts string to number
+console.log(Number.parseInt('23px', 10)); // 23 -> Converts numeric part of string to number
+console.log(Number.parseInt('px23', 10)); // NaN -> Should start with number for conversion
+console.log(+'23px'); // NaN -> + symbol cannot convert strings with characters
+console.log(+'px23'); // NaN -> + symbol cannot convert strings with characters
+console.log(Number.parseInt('23.4 rem', 10)); // 23 -> Converts string to number
+
+console.log(Number.parseFloat('23.4', 10)); // 23.4 -> Converts string to floating number
+console.log(Number.parseFloat('23.4 rem', 10)); // 23.4 -> Converts string to float number
+console.log(Number.parseFloat('px23.4', 10)); // NaN -> Should start with number for conversion
+
+console.log(Number.isNaN(23)); // false -> it's a number
+console.log(Number.isNaN('23')); // false -> It's a regular value and not NaN
+console.log(Number.isNaN('23px')); // false -> It's a regular value and not NaN
+console.log(Number.isNaN('px23')); // false -> It's a regular value and not NaN
+console.log(Number.isNaN('px23')); // false -> It's a regular value and not NaN
+console.log(Number.isNaN(+'23px')); // true
+console.log(Number.isNaN(+'px23')); // true
+console.log(Number.isNaN(Infinity)); // false -> Infinity is a number
+
+// use Number.isFinite to check if a value is a number or not
+
+console.log(Number.isFinite(20)); // true
+console.log(Number.isFinite('20')); // false
+console.log(Number.isFinite(+'20')); // true
+console.log(Number.isFinite(NaN)); // false
+console.log(Number.isFinite(+'20px')); // false
+console.log(Number.isFinite(+'px20')); // false
+console.log(Number.isFinite(20 / 0)); // false
+console.log(Number.isFinite(20 / 10)); // true
+
+console.log(Number.isInteger(20)); // true
+console.log(Number.isInteger(20.0)); // true
+console.log(Number.isInteger(20.3)); // false
+console.log(Number.isInteger(+'20')); // true
+console.log(Number.isInteger(+'20.3')); // false
+console.log(Number.isInteger(+'20.3px')); // false
+console.log(Number.isInteger(+'px20.3')); // false
+console.log(Number.isInteger(20 / 10)); // true
+console.log(Number.isInteger(20 / 9)); // false
+console.log(Number.isInteger(20 / 0)); // false
+console.log(Number.isInteger(NaN)); // false
+console.log(Math.isInteger(NaN)); // false
+
+console.log(Math.sqrt(25)); // 5
+console.log(25 ** 1 / 2); // 5
+
+console.log(Math.max(5, 10, 3)); // 10
+console.log(Math.max(5, '23', 3)); // 23
+console.log(Math.max(5, '23px', 3)); // NaN
+
+console.log(Math.min(5, 10, 3)); // 5
+console.log(Math.min(5, '23', 3)); // 5
+console.log(Math.min(5, '23px', 3)); // NaN
+
+console.log(Math.PI); // 3.14
+
+console.log(Math.floor(Math.random * (max - min + 1) + min)); // random number between min and max included
+
+console.log(Math.trunc(23.4)); // 23
+console.log(Math.trunc(-23.4)); // 23
+
+console.log(Math.round(23.4)); // 23
+console.log(Math.round(23.5)); // 24
+console.log(Math.round(-23.6)); // -24
+console.log(Math.round(-23.4)); // -23
+
+console.log(Math.ceil(23.4)); // 24
+console.log(Math.ceil(-23.4)); // -23
+
+console.log(Math.floor(23.4)); // 23
+console.log(Math.floor(-23.4)); // -24
+
+//.toFixed return string
+console.log((2.7).toFixed(0)); // 3
+console.log((-2.7).toFixed(0)); // -3
+console.log((2.745).toFixed(1)); // 2.7
+console.log((-2.745).toFixed(1)); // -2.7
+
+// Numeric separators
+let num = 287_365_000;
+console.log(num); // JS parses it as a normal number
+
+
+//Number Localization
+
+const num = 232123.32;
+
+console.log(new Intl.NumberFormat('en-US').format(num));
+
+let options = {
+  style: 'unit',
+  unit: 'celsius',
+};
+
+options = {
+  style: 'currency',
+  currency: 'EUR',
+};
+console.log(new Intl.NumberFormat('en-US', options).format(num));
+
+-----------
+
+DATE
+
+// January index -> 0
+// Sunday index -> 0
+
+//Create a date
+console.log(new Date()); // Wed Jul 27 2022 13:11:27 GMT+0530 (India Standard Time)
+console.log(new Date('Tue Jul 27 2022 12:00:10')); // Tue Jul 26 2022 12:00:10 GMT+0530 (India Standard Time)
+console.log(new Date('December 25, 2015')); // Fri Dec 25 2015 00:00:00 GMT+0530 (India Standard Time)
+console.log('2019-11-18T21:31:17.178Z'); // ISO string-> Z means UTC time
+console.log(new Date('2019-11-18T21:31:17.178Z')); // Tue Nov 19 2019 03:01:17 GMT+0530 (India Standard Time)
+console.log(new Date(2142237180000)); // Thu Nov 19 2037 15:23:00 GMT+0530 (India Standard Time)
+console.log(new Date(2037, 10, 19, 15, 23, 5)); // Thu Nov 19 2037 15:23:05 GMT+0530 (India Standard Time)
+console.log(new Date(2037, 10, 31)); // Tue Dec 01 2037 00:00:00 GMT+0530 (India Standard Time)
+console.log(new Date(2022, 10, 33)); // Sat Dec 03 2022 00:00:00 GMT+0530 (India Standard Time -> automatically adds extra days to the date
+
+//UNIX time -> January 1 1970
+console.log(new Date(0)); // Thu Jan 01 1970 05:30:00 GMT+0530 (India Standard Time)
+console.log(new Date(3 * 24 * 60 * 60 * 1000)); // Sun Jan 04 1970 05:30:00 GMT+0530 (India Standard Time) -> 3 days after UNIX
+3 * 24 * 60 * 60 * 1000; // 259200000 -> timestamp
+
+const future = new Date(2037, 10, 19, 15, 23);
+console.log(future.getFullYear()); // 2037
+console.log(future.getMonth()); // 10
+console.log(future.getDate()); // 19
+console.log(future.getDay()); // 4
+console.log(future.getHours()); // 15
+console.log(future.getMinutes()); // 23
+console.log(future.getSeconds()); // 0
+console.log(future.toISOString()); // 2037-11-19T09:53:00.000Z
+console.log(future.getTime()); // 2142237180000
+console.log(new Date(2142237180000)); // Thu Nov 19 2037 15:23:00 GMT+0530 (India Standard Time)
+
+console.log(Date.now()); // 1658909415942 -> Current date timestamp
+
+future.setFullYear(2040);
+future.setDate(23);
+future.setMonth(3);
+console.log(future); // Mon Nov 19 2040 15:23:00 GMT+0530 (India Standard Time)Mon Apr 23 2040 15:23:00 GMT+0530 (India Standard Time)
+
+// Internationalization
+
+browser language-> navigator.language
+
+const now = new Date();
+const options = {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+  weekday: 'long',
+};
+const displayDate = new Intl.DateTimeFormat('en-US', options).format(now);
+
