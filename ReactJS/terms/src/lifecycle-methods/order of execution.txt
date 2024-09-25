@@ -1,0 +1,29 @@
+//Mounting
+
+constructor
+getDerivedStateFromProps
+render
+constructor child
+getDerivedStateFromProps child
+render child
+componentDidMount child
+componentDidMount
+
+
+//Updating
+
+getDerivedStateFromProps
+shouldComponentUpdate
+render
+getDerivedStateFromProps child
+shouldComponentUpdate child
+render child
+getSnapshotBeforeUpdate child
+getSnapshotBeforeUpdate
+componentDidUpdate child
+componentDidUpdate
+
+//Unmounting
+
+componentWillUnmount
+componentWillUnmount child

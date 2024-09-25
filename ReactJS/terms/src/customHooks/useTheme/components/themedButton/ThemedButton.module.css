@@ -1,0 +1,21 @@
+/* styles.css */
+.container{
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.light {
+    background-color: #ffffff;
+    color: #333333;
+  }
+  
+  .dark {
+    background-color: #333333;
+    color: #ffffff;
+  }
+  

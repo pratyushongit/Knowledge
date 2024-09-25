@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(40,171,106,1) 50%, rgba(0,212,255,1) 100%);
+}
+
+h1{
+  color: white;
+}
+
+.form{
+  color: white;
+}
+
+.submitButton{
+  padding: 15px;
+  background-color: purple;
+  color: white;
+  border: 0px;
+  border-radius: 25px;
+  width: 100%;
+  cursor: pointer;
+  margin-top: 10px;
+}

@@ -1,0 +1,19 @@
+.formInput {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0px;
+  width: 30vw;
+}
+
+input{
+  padding: 15px;
+  margin-top: 5px;
+}
+
+.error input{
+  border: 1px solid red;
+}
+
+.error span{
+  color: red;
+}
