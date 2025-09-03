@@ -26,17 +26,17 @@ person.run.call(engineer, "Electrical");
 
 // Without Call
 
-Function.prototype.myCall = function (obj, ...args) {
-  let myFunc = new Function(
-    "tempThis",
-    "tempObj",
-    "args",
-    `{
-        tempObj['fn'] = tempThis;
-        return tempObj.fn(...args);
-    }`
-  );
-  myFunc(this, obj, args);
+Function.prototype.myCall = function (thisArg, ...argArray) {
+  thisArg = thisArg ?? globalThis;
+  argArray = argArray || [];
+
+  const fnKey = Symbol('fn');
+  thisArg[fnKey] = this;
+
+  // Create a unique property to avoid collisions
+  const result = thisArg[fnKey](...argArray);
+  delete thisArg[fnKey];
+  return result;
 };
 
 person.run.myCall(engineer, "Civil");
