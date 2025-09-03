@@ -49,17 +49,17 @@ person.run.apply(engineer, ["Electrical"]);
 
 // Without Apply
 
-Function.prototype.myApply = function (obj, args) {
-  let myFunc = new Function(
-    "tempThis",
-    "tempObj",
-    "args",
-    `{
-        tempObj['fn'] = tempThis;
-        return tempObj.fn(...args);
-    }`
-  );
-  myFunc(this, obj, args);
+Function.prototype.myApply = function (thisArg, argArray) {
+  thisArg = thisArg ?? globalThis;
+  argArray = argArray || [];
+
+  // Create a unique property to avoid collisions
+  const fnKey = Symbol('fn');
+  thisArg[fnKey] = this;
+
+  const result = thisArg[fnKey](...argArray);
+  delete thisArg[fnKey];
+  return result;
 };
 
 person.run.myApply(engineer, ["Mechanical"]);
