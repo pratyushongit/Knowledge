@@ -122,6 +122,10 @@ Using "textContent" will return the complete text content, including the hidden 
 
 ---------------
 
+Garbage collection = automatically removing unused objects from memory.
+
+---------------
+
 JS Execution Context:
 
 2 phases:
