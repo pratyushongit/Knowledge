@@ -225,7 +225,19 @@ set.add('rat'); // returns the complete set 8u9
 set.delete('rat'); //returns true/false
 set.size; //returns length
 set.entries(); //returns key value as the same value
-const setArr = Array.from(set); //convert set to array
+const setArr = Array.from(set); or [...set] //convert set to array
+
+//new methods
+let arr1 = ['ram','shyam', 'riya'];
+let arr2 = ['rohan','mohan','riya'];
+
+let set1 = new Set(arr1);
+let set2 = new Set(arr2);
+console.log(set1.intersection(set2)); // unique common across 2 sets
+console.log(set1.union(set2)); // combining all unique elements from both sets.
+console.log(set1.difference(set2)); // Elements that are in Set 1 but NOT in Set 2
+console.log(set1.symmetricDifference(set2)); // elements that are in either set, but not in both
+
 //iteration
 for (const value of set) {
   console.log(value);
