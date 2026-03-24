@@ -123,6 +123,11 @@ Using "textContent" will return the complete text content, including the hidden 
 ---------------
 
 Garbage collection = automatically removing unused objects from memory.
+Algorithm used for garbage-collection: Mark-and-sweep algorithm
+  - Mark: The object which are reachable from the root are marked as 'traceable'
+  - Sweep: Delete un-marked references
+
+Memory-Leak: When there are objects in the memory which are no longer required and they are incorrectly still reachable, then it is not garbage collected causing memory leaks.
 
 ---------------
 
