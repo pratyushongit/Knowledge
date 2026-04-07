@@ -184,7 +184,7 @@ console.log(arr.includes('c')); // check if it contains the string
 //FLAT -> Doesnot mutate the original array
 
 console.log(arr.flat(n)); // flatten array, where n is the level of flattening
-console.log(arr.flatMap()); // use flat() on an array after using map()
+console.log(arr.flatMap()); // use flat(1) on an array after using map()
 
 // SORT -> Mutates the array
 // Time complexity -> O(nlogn)
