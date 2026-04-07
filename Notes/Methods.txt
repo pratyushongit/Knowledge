@@ -122,6 +122,8 @@ console.log(arr.slice()); // Shallow copy of the array
 // console.log(arr.splice(1, 2)); // Final Array -> ['a', 'd', 'e']
 // console.log(arr.splice(1, 2, 'ins1', 'ins2')); // Final Array -> ['a', 'ins1', 'ins2', 'd', 'e']
 
+// toSpliced() -> doesnont mutate the original array
+
 
 //MAP -> Does not mutate the original array
 
@@ -155,12 +157,26 @@ arr1.reduce(
 	withdrawals: 8,
 }
 
+// GROUPBY - Groups elements based on the key returned from callback
+
+const arr = [1, 2, -3, 4, -5, 6];
+
+const resultObj = Object.groupBy(arr,(element, index) => {
+  return element < 0 ? 'deposits' : 'withdrawals';
+});
+
+Output:
+{
+  deposits: [ 1, 2, 4, 6],
+  withdrawals: [-3, -5]
+}
+
 
 // REVERSE -> Modifies original array
 
 console.log(arr.reverse()); // Final Array -> ['e', 'd', 'c', 'b', 'a']
 
-// toReverse() -> doesnont mutate the original array
+// toReversed() -> doesnont mutate the original array
 
 
 
@@ -198,14 +214,14 @@ console.log(arr1.sort()); // [-130, -400, -650, 1300, 200, 3000, 450, 70]
 
 // Keep order -> if returned value is negative
 // Switch order -> if returned value is positive
+
+
 // Ascending
 arr1.sort((a, b) => (a > b ? 1 : -1));
 // or
 arr1.sort((a, b) => a - b);
 console.log(arr1);
 
-// Keep order -> if returned value is positive
-// Switch order -> if returned value is negative
 // Descending
 arr1.sort((a, b) => (a > b ? -1 : 1));
 // or
@@ -217,24 +233,16 @@ console.log(arr1);
 
 // FILL -> Mutates the original array
 console.log(Array(7).fill('a')); // ['a', 'a', 'a', 'a', 'a', 'a', 'a']
-console.log(Array(7).fill('a', 2, 5)); // [empty × 2, 'a', 'a', 'a', empty × 2]
+console.log(Array(7).fill('a', 2, 5)); // [empty × 2, 'a', 'a', 'a', empty × 2] // .fill (.fill(value, start(inclusive), end(exclusive)))
 console.log(Array(5, 4, 5, 6, 7).fill('a', 1, 4)); // [5, 'a', 'a', 'a', 7]
 
 //FROM
 
-const x = Array.from({ length: 100 }, () => Math.round(Math.random() * 6));
-console.log(x); // [7, 7, 7, 7, 7, 7, 7]
+const x = Array.from({ length: 10 }, () => Math.floor(Math.random() * 7));
+console.log(x); // [7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
 
 const y = Array.from({ length: 7 }, (_, i) => i + 1);
 console.log(y); // [1, 2, 3, 4, 5, 6, 7]
-
-const maps = new Map([
-  ['name', 'John'],
-  [1, 20],
-  [false, 'wow'],
-]);
-
-console.log();
 
 ------------
 
