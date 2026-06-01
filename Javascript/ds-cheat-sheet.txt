@@ -1,0 +1,5 @@
+DS Patterns:
+
+- For [duplicates] use [Set]
+- For [anagram checking] use [frequency matching]
+- 

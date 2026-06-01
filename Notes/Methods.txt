@@ -239,7 +239,7 @@ console.log(Array(5, 4, 5, 6, 7).fill('a', 1, 4)); // [5, 'a', 'a', 'a', 7]
 //FROM
 
 const x = Array.from({ length: 10 }, () => Math.floor(Math.random() * 7));
-console.log(x); // [7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+console.log(x); // [2, 2, 0, 6, 5, 5, 6, 6, 4, 3]
 
 const y = Array.from({ length: 7 }, (_, i) => i + 1);
 console.log(y); // [1, 2, 3, 4, 5, 6, 7]
@@ -249,25 +249,40 @@ console.log(y); // [1, 2, 3, 4, 5, 6, 7]
 //NUMBERS
 
 console.log(+'23'); // Converts string to number
+
+// parseInt() reads until it hits a non-numeric character.
 console.log(Number.parseInt('23', 10)); // Converts string to number
 console.log(Number.parseInt('23px', 10)); // 23 -> Converts numeric part of string to number
 console.log(Number.parseInt('px23', 10)); // NaN -> Should start with number for conversion
+console.log(Number.parseInt('23.4 rem', 10)); // 23 -> Converts string to number
+
 console.log(+'23px'); // NaN -> + symbol cannot convert strings with characters
 console.log(+'px23'); // NaN -> + symbol cannot convert strings with characters
-console.log(Number.parseInt('23.4 rem', 10)); // 23 -> Converts string to number
 
 console.log(Number.parseFloat('23.4', 10)); // 23.4 -> Converts string to floating number
 console.log(Number.parseFloat('23.4 rem', 10)); // 23.4 -> Converts string to float number
 console.log(Number.parseFloat('px23.4', 10)); // NaN -> Should start with number for conversion
 
+//Number.isNaN() only returns true if the value is actually the special JavaScript value NaN and its type is number.
+
 console.log(Number.isNaN(23)); // false -> it's a number
 console.log(Number.isNaN('23')); // false -> It's a regular value and not NaN
 console.log(Number.isNaN('23px')); // false -> It's a regular value and not NaN
 console.log(Number.isNaN('px23')); // false -> It's a regular value and not NaN
-console.log(Number.isNaN('px23')); // false -> It's a regular value and not NaN
 console.log(Number.isNaN(+'23px')); // true
 console.log(Number.isNaN(+'px23')); // true
 console.log(Number.isNaN(Infinity)); // false -> Infinity is a number
+
+// isNaN() coerces values to numbers first
+
+console.log(isNaN(23)); // false
+console.log(isNaN('23')); // false
+console.log(isNaN('23px')); // true
+console.log(isNaN('px23')); // true
+console.log(isNaN(+'23px')); // true
+console.log(isNaN(+'px23')); // true
+console.log(isNaN(Infinity)); // false
+
 
 // use Number.isFinite to check if a value is a number or not
 
@@ -309,7 +324,7 @@ console.log(Math.PI); // 3.14
 console.log(Math.floor(Math.random * (max - min + 1) + min)); // random number between min and max included
 
 console.log(Math.trunc(23.4)); // 23
-console.log(Math.trunc(-23.4)); // 23
+console.log(Math.trunc(-23.4)); // -23
 
 console.log(Math.round(23.4)); // 23
 console.log(Math.round(23.5)); // 24
