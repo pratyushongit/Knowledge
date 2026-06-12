@@ -145,8 +145,8 @@ NOTE: Use function.bind(argument) to pass argument to event handler. Also use si
 
 
 // Intersection Observer API
-// provides a way to asynchronously observe changes in the intersection of a target element with an ancestor element or with a top-level document's viewport.
-// Used for lazy loading images, infinite scrolling
+// Lets you know when an element enters or leaves another element's viewport
+// Instead of continuously checking an element's position with scroll events, the browser notifies you when visibility changes.
 
 
 const navHeight = nav.getBoundingClientRect().height;
@@ -195,3 +195,6 @@ window.addEventListener('beforeunload', e => {
 //Get data from a form => const data = [...new FormData(the form html element)];
 
 NOTE: For addeventlistner callbacks use function() syntax instead of arrow functions if using this inside callback
+
+event.target -> The element that actually triggered the event.
+event.currentTarget -> The element that currently has the event listener attached.
