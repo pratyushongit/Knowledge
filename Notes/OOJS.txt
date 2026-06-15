@@ -101,7 +101,7 @@ OOP in JS:
 Prototype -> Every object in JavaScript has a built-in property, which is called its prototype. The prototype is itself an object. It contains properties and methods which can be accessed by the objects linked to it.
 
 Prototypical Inheritance -> A prototype objects contains properties and methods that all the objects that are linked to the prototype object has access to. This is called prototypical inheritance. It is used to build new types of objects based on existing ones.
-We try to look for a property/ mothod in the instance/object createad by new <Constructor Function>. If it is not found it will searched in the prototype of the object/instance.
+We try to look for a property/ method in the instance/object createad by new <Constructor Function>. If it is not found it will searched in the prototype of the object/instance.
 
 The prototype on object instance is available through Object.getPrototypeOf(object) or __proto__ property whereas prototype on constructors function is available through Object.prototype.
 
@@ -146,8 +146,8 @@ const Person = function (firstName, birthyear) {
   this.firstName = firstName;
   this.birthyear = birthyear;
 
-  // Never use methods in constructor functions as all objects created bt the constructor function will have this method which can lead to performance issues.
-  // For solving the above issue we should use prototypeinheritance.
+  // Never use methods in constructor functions as all objects created by the constructor function will have this method which can lead to performance issues.
+  // For solving the above issue we should add the method in hte proptotype of the constructor function.
 };
 
 const john = new Person('John', 1993); // this keyword points to the newly created object
@@ -294,7 +294,7 @@ class PersonCl {
   }
 
   calcAge = function () {
-    console.log(2022 - this.birthyear);
+    console.log(2026 - this.birthyear);
   };
 
   get age() {
