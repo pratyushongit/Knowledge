@@ -217,7 +217,7 @@ const debounce = (callback,delay) => {
 const debounceAutoSuggest = debounce(fetchAutoSuggest, 300);
 
 // Throttling
-//  It ensures that the function is called at most once within a specified time interval
+//  It s an optimisation technique which limits the number of times a function gets executed, irrespective of the number of times the event has been fired.
 
 const fetchThrottlingAutoSuggest = (data) => {
   // Make api call for each key press
