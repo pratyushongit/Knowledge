@@ -42,11 +42,11 @@ function operate() {
             console.log(product + "and" + value);
           },
           1000,
-          price
+          price,
         );
       },
       1000,
-      allProd[1]
+      allProd[1],
     );
   }, 1000);
 }
@@ -68,7 +68,7 @@ function product(data) {
         resolve({ prod: "apple", price: "100" });
       },
       1000,
-      data
+      data,
     );
   });
 }
@@ -80,7 +80,7 @@ function price(data) {
         resolve({ price: 1000 });
       },
       1000,
-      data
+      data,
     );
   });
 }
@@ -98,7 +98,6 @@ operate()
   .catch((err) => {
     console.log(err);
   });
-
 
 // Async await
 
@@ -156,7 +155,7 @@ compute()
     console.log(err);
   });
 
-// Generator Functions
+// Generator Functions -> A JavaScript generator function is a special type of function that can pause its execution mid-way and resume later from where it left off.
 
 function* fun() {
   yield 10;
@@ -188,56 +187,67 @@ const Shape = new Function(
     this.draw = function(){
       console.log('Inside Draw');
     }
-  }`
+  }`,
 );
 
 const circle = new Shape("red");
 Shape.call({}, "red");
 
 // Debouncing
-// Debouncing is a technique used to improve performance by delaying the execution of a function until after a certain amount of time has passed since the last time the function was called. 
+// Debouncing is a technique used to improve performance by delaying the execution of a function until after a certain amount of time has passed since the last time the function was called.
 
-const fetchAutoSuggest = (data) => {
-  // Make api call for each key press
-  let value = document.querySelector("#debounce").value;
-  console.log(value);
+const inputElement = document.querySelector("#username");
+
+const fetchData = async (filter) => {
+  const data = await fetch(
+    `https://api.escuelajs.co/api/v1/products/?title=${filter}`,
+  );
+  const res = await data.json();
+  console.log(res);
 };
 
-const debounce = (callback,delay) => {
-	let timer;
-  return (...args) => {
-	let context = this;
-  	clearTimeout(timer);
-    timer = setTimeout(() => {
-    	callback.apply(context, args);
-    }, delay)
-  }
+const debounce = (method, time) => {
+  let timeoutId;
+  return function (...args) {
+    let context = this;
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      method.apply(context, args);
+    }, time);
+  };
 };
 
-const debounceAutoSuggest = debounce(fetchAutoSuggest, 300);
+const debouncedFetchData = debounce(fetchData, 300);
+
+inputElement.addEventListener("keyup", (event) => {
+  debouncedFetchData(event.target.value);
+});
 
 // Throttling
 //  It s an optimisation technique which limits the number of times a function gets executed, irrespective of the number of times the event has been fired.
 
-const fetchThrottlingAutoSuggest = (data) => {
-  // Make api call for each key press
-  let value = document.querySelector("#throttle").value;
-  console.log(value);
+const getScrollPos = () => {
+  console.log(window.scrollY);
 };
 
-const throttle = (callback, delay) => {
-	let lastExecution = Date.now();
-  return (...args) => {
-  	const now = Date.now();
-    const elapsedTIme = now - lastExecution;
-    if(elapsedTIme > delay){
-    	lastExecution = now;
-      	callback(...args);
+const throttle = (method, time) => {
+  let lastExecuted = Date.now();
+  return function (...args) {
+    let context = this;
+    const now = Date.now();
+    const elapsedTime = now - lastExecuted;
+    if (elapsedTime > time) {
+      lastExecuted = now;
+      method.apply(context, args);
     }
   };
 };
 
-throttlingAutoSuggest = throttle(fetchThrottlingAutoSuggest, 300);
+const throttledGetScrollPos = throttle(getScrollPos, 1000);
+
+window.addEventListener("scroll", (event) => {
+  throttledGetScrollPos();
+});
 
 // Factory Function
 
@@ -299,7 +309,7 @@ let reduceArr = [1, 2, 3, 4, 5];
 console.log(
   reduceArr.reduce((p, c, i) => {
     return p + c;
-  }, 0)
+  }, 0),
 );
 
 // Call
@@ -394,23 +404,33 @@ navigator.geolocation.watchPosition((position) => {
 // Notification API
 
 const showNotification = () => {
-  const notification = new Notification('A new notification!', {
-    body: 'Hello! How you doing?',
+  const notification = new Notification("A new notification!", {
+    body: "Hello! How you doing?",
   });
 
-  Notification.requestPermission().then(permission => {
-    if (permission == 'granted') {
+  Notification.requestPermission().then((permission) => {
+    if (permission == "granted") {
       showNotification();
     }
   });
+};
 
 // Server Sent Events (SSE)
- //A server-sent event is when a web page automatically gets updates from a server.
+//A server-sent event is when a web page automatically gets updates from a server.
 
-var source = new EventSource("demo_sse.php");
-source.onmessage = function (event) {
-  console.log(event.data);
+const source = new EventSource("http://localhost:3000/events");
+
+source.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  console.log("Received:", data);
 };
+
+source.onerror = (err) => {
+  console.error("SSE error:", err);
+};
+
+// To manually close the connection later:
+// source.close();
 
 // Drag and Drop
 
@@ -438,20 +458,25 @@ for (var i = 0; i < 5; i++) {
     console.log(i);
   });
 }
+emptyArray.forEach((fn) => fn());
+
 // To
 for (var i = 0; i < 5; i++) {
-  ((i) => {
+  ((j) => {
     emptyArray.push(() => {
-      console.log(i);
+      console.log(j);
     });
   })(i);
 }
+emptyArray.forEach((fn) => fn());
+
 // Or
 for (let i = 0; i < 5; i++) {
   emptyArray.push(() => {
     console.log(i);
   });
 }
+emptyArray.forEach((fn) => fn());
 
 // Event Bubbling and Capturing/Trickling
 // if useCapture flag is true -> catch events in capturing phase
@@ -462,7 +487,7 @@ document.querySelector("#grandfather").addEventListener(
   () => {
     console.log("Grandfather Clicked");
   },
-  false
+  false,
 );
 
 document.querySelector("#father").addEventListener(
@@ -470,7 +495,7 @@ document.querySelector("#father").addEventListener(
   () => {
     console.log("Father Clicked");
   },
-  false
+  false,
 );
 
 document.querySelector("#child").addEventListener(
@@ -478,9 +503,10 @@ document.querySelector("#child").addEventListener(
   () => {
     console.log("Child Clicked");
   },
-  false
+  false,
 );
 
+// Currying -> Instead of a function taking all its arguments at once, currying transforms it into a chain of functions that each take one argument at a time,
 // Currying sum(1)(2)(3)
 
 function sumSimpleCurry(a) {
@@ -511,52 +537,78 @@ function sumCurry(a) {
 
 console.log(sumCurry(2)(4)(6)());
 
+// Convert any function to curried function
+
+const sum = (a, b, c) => a + b + c;
+
+const curry = (fn) => {
+  return function curried(...args) {
+    if (args.length >= fn.length) {
+      return fn.apply(this, args);
+    } else {
+      return (...moreArgs) => curried(...args, ...moreArgs);
+    }
+  };
+};
+
+const curriedSum = curry(sum);
+
+console.log(curriedSum(1)(2)(3)); // 6
+console.log(curriedSum(1, 2)(3)); // 6
+console.log(curriedSum(1)(2, 3)); // 6
+
 // Prototypical Inheritance in ES5
 
-function Shape() {
-  this.color = "red";
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
 }
 
-Shape.prototype.sum = function () {
-  console.log("Sum");
+Person.prototype.getName = function () {
+  return this.name;
 };
-var s = new Shape();
 
-function Circle() {
-  Shape.call(this);
-  this.radius = 10;
+function Student(name, age, batch) {
+  Person.call(this, name, age);
+  this.batch = batch;
 }
 
-Circle.prototype = Object.create(Shape.prototype);
-Circle.prototype.constructor = Circle;
+Student.prototype = Object.create(Person.prototype);
+Student.prototype.constructor = Student;
 
-Circle.prototype.draw = function () {
-  console.log("Draw");
+Student.prototype.getBatch = function () {
+  return this.batch;
 };
 
-const c = new Circle();
+const p = new Person("John", "20");
+const s = new Student("John", "20", "Electrical");
 
 //   Prototypical Inheritance in ES6
 
-class Shape {
-  constructor(color) {
-    this.color = color;
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
   }
 
-  duplicate() {
-    console.log("Shape Duplicate");
+  getName() {
+    return this.name;
   }
 }
 
-class Circle extends Shape {
-  constructor(radius, color) {
-    this.radius = radius;
+class Student extends Person {
+  constructor(name, age, branch) {
+    super(name, age);
+    this.branch = branch;
   }
 
-  duplicate() {
-    console.log("Circle Duplicate");
+  getBranch() {
+    return this.branch;
   }
 }
+
+const p = new Person("John", "20");
+const s = new Student("John", "20", "Electrical");
 
 // Method Chaining in Javascript
 
@@ -574,7 +626,7 @@ class Obj {
   }
 }
 
-// Method Chaining in jQuery
+// Method Chaining
 
 const my = new Obj();
 console.log(my.sum(1, 2).multiply(3).value);
@@ -625,10 +677,8 @@ inc(num);
 
 console.log(num);
 
-
 //Abstract Class
 // It's a class whose instance cannot be created. They also have abstract methods which are declared but not implemented. It provides a blueprint for the sub classes which inherit from it.
-
 
 //Abstract Class in ES5
 
@@ -672,30 +722,31 @@ const ab = new Abst();
 //Deep copy
 
 function deepCopy(obj) {
-    // Check if the input is an object
-    if (typeof obj !== 'object' || obj === null) {
-        return obj; // Return the input directly if it's not an object
-    }
-    
-    // Create an empty object to hold the copy
-    const newObj = Array.isArray(obj) ? [] : {};
-    
-    // Iterate through all properties of the object
-    for (let key in obj) {
-        // Recursively deep copy nested objects
-        newObj[key] = deepCopy(obj[key]);
-    }
-    
-    return newObj; // Return the deep copy
+  // Check if the input is an object
+  if (typeof obj !== "object" || obj === null) {
+    return obj; // Return the input directly if it's not an object
+  }
+
+  // Create an empty object to hold the copy
+  const newObj = Array.isArray(obj) ? [] : {};
+
+  // Iterate through all properties of the object
+  for (let key in obj) {
+    // Recursively deep copy nested objects
+    newObj[key] = deepCopy(obj[key]);
+  }
+
+  return newObj; // Return the deep copy
 }
 
 // Example usage
 const originalObj = {
-    prop1: 'value1',
-    prop2: {
-        nestedProp1: 'nestedValue1',
-        nestedProp2: 'nestedValue2'
-    }
+  prop1: "value1",
+  prop2: {
+    nestedProp1: "nestedValue1",
+    nestedProp2: "nestedValue2",
+    nestedProp2: ["a", "b"],
+  },
 };
 
 const deepCopiedObj = deepCopy(originalObj);
