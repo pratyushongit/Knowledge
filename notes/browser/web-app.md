@@ -1,0 +1,10 @@
+# Web App
+
+## Optimization
+
+- script tags at the bottom of page or use async/defer
+- minify js and bundle code
+- use optimization tools
+- use cdn
+- reduce img sizes
+- caching

@@ -1,8 +1,0 @@
-DS Patterns:
-
-- For [Duplicates in Array] use [Set]
-- For [Anagram] use [frequency matching using object]
-- For [Two Sum] use [hash map] where you get the diff and if diff present in map, add the element as key index as value
-- For [Group Anagrams] use [hash map] where i take an array of 26 length and form a key based on the diff and as value i have an array with the string.
-- For [Top K Frequent Elements] use [Bucket Sorting]
-- For [Encode and Decode Strings] use 
