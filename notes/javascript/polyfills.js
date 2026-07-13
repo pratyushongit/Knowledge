@@ -23,7 +23,7 @@ Function.prototype.myCall = function (context = {}, ...args) {
     throw new Error(this + "this is not callable");
   }
   context.func = this;
-  context.func(...args);
+  return context.func(...args);
 };
 
 obj.greet.myCall(anotherObj, "Hello", "girl");
@@ -39,7 +39,7 @@ Function.prototype.myApply = function (context = {}, args) {
     throw new Error(this + "this is not callable");
   }
   context.func = this;
-  context.func(...args);
+  return context.func(...args);
 };
 
 obj.greet.myApply(anotherObj, ["Hello", "girl"]);
@@ -58,171 +58,179 @@ Function.prototype.myBind = function (context = {}, ...args) {
 
   context.func = this;
   return function (...innerArgs) {
-    context.func(...args, ...innerArgs);
+    return context.func(...args, ...innerArgs);
   };
 };
 
-const myApplyFn = obj.greet.myBind(anotherObj, "Hello");
-myApplyFn("girl");
+const myBindFn = obj.greet.myBind(anotherObj, "Hello");
+myBindFn("girl");
 
 // --------------------- Arrays --------------------------
 
-var arr = ["biggy smalls", "bif tannin", "boo radley", "hans gruber"];
+var arr = [3, 1, 62, 89, 31, 7, 6];
 
-// MAP
+// map
 
-// With Map
-
-var mapArr = arr.map((el, index, arr) => {
-  return `${el} + ${index} + ${arr}`;
+//Original
+const res = arr.map((el, index, array) => {
+  return `The values are: ${el} at index:${index}. The full array:${array}`;
 });
+console.log(res);
 
-console.log(mapArr);
-
-// Without Map
-
+//Polyfill
 Array.prototype.myMap = function (callback) {
-  let myArr = [];
-  for (let i = 0; i < this.length; i++) {
-    myArr.push(callback(this[i], i, this));
+  if (typeof callback !== "function") {
+    throw new TypeError(callback + " is not a function");
   }
-  return myArr;
+  if (this == null) {
+    throw new TypeError("this is null or not defined");
+  }
+
+  let resArr = [];
+  for (let i = 0; i < this.length; i++) {
+    resArr.push(callback(this[i], i, this));
+  }
+  return resArr;
 };
 
-var mapArr = arr.myMap((el, index, arr) => {
-  return `${el} + ${index} + ${arr}`;
+const myMapRes = arr.myMap((el, index, array) => {
+  return `The values are: ${el} at index: ${index}. The full array: ${array}`;
 });
-
-console.log(mapArr);
+console.log(myMapRes);
 
 // FILTER
 
-// With Filter
-
-var filterArr = arr.filter((el, index, arr) => {
-  return el.includes("bi");
+// Original
+const resFilter = arr.filter((el, index, array) => {
+  return index % 2 === 0;
 });
+console.log(resFilter);
 
-console.log(filterArr);
-
-// Without Filter
-
+//Polyfill
 Array.prototype.myFilter = function (callback) {
-  let myArr = [];
-  for (let i = 0; i < this.length; i++) {
-    if (callback(this[i], i, this)) {
-      myArr.push(this[i]);
-    }
+  if (typeof callback !== "function") {
+    throw new TypeError(callback + " is not a function");
   }
-  return myArr;
+  if (this == null) {
+    throw new TypeError("this is null or not defined");
+  }
+
+  let resArr = [];
+  for (let i = 0; i < this.length; i++) {
+    if (callback(this[i], i, this)) resArr.push(this[i]);
+  }
+  return resArr;
 };
 
-var filterArr = arr.myFilter((el, index, arr) => {
-  return el.includes("bi");
+const myResFilter = arr.myFilter((el, index, array) => {
+  return index % 2 === 0;
 });
-
-console.log(filterArr);
+console.log(myResFilter);
 
 // REDUCE
 
-// With Reduce
+// Original
+const resReduce = arr.reduce((prev, curr, index, array) => {
+  return prev + curr;
+}, 0);
+console.log(resReduce);
 
-let numArr = [50, 20, 10, 5, 5];
-
-var reduceVal = numArr.reduce((prev, curr, index) => {
-  return prev - curr;
-});
-
-console.log(reduceVal);
-
-// Without Reduce
-
-Array.prototype.myReduce = function (callback, initial) {
-  for (let i = 0; i < this.length; i++) {
-    initial = initial ? callback(initial, this[i], i) : this[i];
+//Polyfill
+Array.prototype.myReduce = function (callback, initialValue) {
+  if (typeof callback !== "function") {
+    throw new TypeError(callback + " is not a function");
   }
-  return initial;
+  if (this == null) {
+    throw new TypeError("this is null or not defined");
+  }
+
+  for (let i = 0; i < this.length; i++) {
+    initialValue = initialValue
+      ? callback(initialValue, this[i], i, this)
+      : this[i];
+  }
+  return initialValue;
 };
 
-var reduceVal = numArr.myReduce((prev, curr, index) => {
-  return prev - curr;
-});
-
-console.log(reduceVal);
+const myResReduce = arr.myReduce((prev, curr, index, array) => {
+  return prev + curr;
+}, 0);
+console.log(myResReduce);
 
 // FOREACH
 
-// With Foreach
-
-arr.forEach((el, index, arr) => {
-  console.log(`${index} and ${el} and ${arr}`);
+// Original
+arr.forEach((el, index, array) => {
+  console.log(
+    `The values are: ${el} at index:${index}. The full array:${array}`,
+  );
 });
 
-// Without Foreach
+// Polyfill
 
-Array.prototype.myEach = function (callback) {
+Array.prototype.myForEach = function (callback) {
   for (let i = 0; i < this.length; i++) {
     callback(this[i], i, this);
   }
 };
 
-arr.myEach((el, index, arr) => {
-  console.log(`${index} and ${el} and ${arr}`);
+arr.myForEach((el, index, array) => {
+  console.log(
+    `The values are: ${el} at index:${index}. The full array:${array}`,
+  );
 });
 
 // EVERY
 
-// With Every
-
-var isEvery = numArr.every((el) => {
-  return el % 5 == 0;
+// Original
+const everyRes = arr.every((el, index, array) => {
+  return el % 2 === 0;
 });
+console.log(everyRes);
 
-console.log(isEvery);
-
-// Without Every
+// Polyfill
 
 Array.prototype.myEvery = function (callback) {
   for (let i = 0; i < this.length; i++) {
-    if (!callback(this[i])) {
+    if (!callback(this[i], i, this)) {
       return false;
     }
   }
   return true;
 };
 
-var isEvery = numArr.myEvery((el) => {
-  return el % 5 == 0;
+const myEveryRes = arr.myEvery((el, index, array) => {
+  return el % 2 === 0;
 });
 
-console.log(isEvery);
+console.log(myEveryRes);
 
 // SOME
 
-// With Some
-
-var isSome = numArr.some((el) => {
-  return el % 10 == 0;
+// Original
+const someRes = arr.some((el, index, array) => {
+  return el % 2 === 0;
 });
+console.log(someRes);
 
-console.log(isSome);
-
-// Without Some
+// Polyfill
 
 Array.prototype.mySome = function (callback) {
   for (let i = 0; i < this.length; i++) {
-    if (callback(this[i])) {
+    if (callback(this[i], i, this)) {
       return true;
     }
   }
   return false;
 };
 
-var isSome = numArr.mySome((el) => {
-  return el % 10 == 0;
+const mySomeRes = arr.mySome((el, index, array) => {
+  return el % 2 === 0;
 });
 
-console.log(isSome);
+console.log(mySomeRes);
+
+// --------------------- Promises --------------------------
 
 // Promise
 
