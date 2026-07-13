@@ -350,6 +350,8 @@ Transpiling - Convert all modern JS features back to ES5 syntax so that older br
 
 Most common build tools are webpack or parcel
 
+Polyfills - It's a piece of code that is used to support mordern JS features in older browsers that donot support those modern features natively.
+
 
 //ES6 Modules
 In JavaScript, a module is a self-contained unit of code that encapsulates specific functionality. Modules help in organizing code into smaller, more manageable pieces, making it easier to maintain, scale. With the introduction of ES6 (ECMAScript 2015), JavaScript gained built-in support for modules through the import and export keywords. Prior to ES6, developers used various module systems like CommonJS, AMD, or UMD

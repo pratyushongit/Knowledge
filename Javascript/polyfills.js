@@ -1,86 +1,69 @@
 // ------------------Functions ------------------------
 
-const person = {
-  firstname: "John",
-  lastname: "Doe",
-  run: function (element) {
-    console.log(`${this.firstname} and ${element}`);
+const obj = {
+  name: "John",
+  greet: function (greeting, gender) {
+    console.log(`${greeting}, my name is ${this.name}. I'm a ${gender}`);
   },
 };
 
-const engineer = {
-  firstname: "Mary",
+const anotherObj = {
+  name: "Jane",
 };
 
-const computeInfo = function (state, country) {
-  console.log(
-    this.firstname + " " + this.lastname + " " + state + " " + country
-  );
+// call
+
+// Original
+obj.greet.call(anotherObj, "Hello", "girl");
+
+
+// Polyfill
+Function.prototype.myCall = function (context = {}, ...args) {
+  if (typeof this !== "function") {
+    throw new Error(this + "this is not callable");
+  }
+  context.func = this;
+  context.func(...args);
 };
 
-// CALL
-
-// With Call
-
-person.run.call(engineer, "Electrical");
-
-// Without Call
-
-Function.prototype.myCall = function (thisArg, ...argArray) {
-  thisArg = thisArg ?? globalThis;
-  argArray = argArray || [];
-
-  const fnKey = Symbol('fn');
-  thisArg[fnKey] = this;
-
-  // Create a unique property to avoid collisions
-  const result = thisArg[fnKey](...argArray);
-  delete thisArg[fnKey];
-  return result;
-};
-
-person.run.myCall(engineer, "Civil");
+obj.greet.myCall(anotherObj, "Hello", "girl");
 
 // APPLY
 
-// With Apply
+//Original
+obj.greet.apply(anotherObj, ["Hello", "girl"]);
 
-person.run.apply(engineer, ["Electrical"]);
-
-// Without Apply
-
-Function.prototype.myApply = function (thisArg, argArray) {
-  thisArg = thisArg ?? globalThis;
-  argArray = argArray || [];
-
-  // Create a unique property to avoid collisions
-  const fnKey = Symbol('fn');
-  thisArg[fnKey] = this;
-
-  const result = thisArg[fnKey](...argArray);
-  delete thisArg[fnKey];
-  return result;
+//Polyfill
+Function.prototype.myApply = function (context = {}, args) {
+  if (typeof this !== "function") {
+    throw new Error(this + "this is not callable");
+  }
+  context.func = this;
+  context.func(...args);
 };
 
-person.run.myApply(engineer, ["Mechanical"]);
+obj.greet.myApply(anotherObj, ["Hello", "girl"]);
 
 // BIND
 
-// With Bind
+// Original
+const myFn = obj.greet.bind(anotherObj, "Hello");
+myFn("girl");
 
-const funBind = computeInfo.bind(person, "Karnataka");
-funBind("India");
+//Polyfill
+Function.prototype.myBind = function (context = {}, ...args) {
+  if (typeof this !== "function") {
+    throw new Error(this + "this is not callable");
+  }
 
-// Without Bind
-
-Function.prototype.myBind = function (obj, ...args) {
-  return function (...params) {
-    this.apply(obj, [...args, ...params]);
+  context.func = this;
+  return function (...innerArgs) {
+    context.func(...args, ...innerArgs);
   };
 };
 
-const newFunBind = computeInfo.myBind(person, "Karnataka");
-newFunBind("India");
+const myApplyFn = obj.greet.myBind(anotherObj, "Hello");
+myApplyFn("girl");
 
 // --------------------- Arrays --------------------------
 
