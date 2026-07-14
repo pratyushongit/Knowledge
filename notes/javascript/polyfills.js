@@ -11,7 +11,7 @@ const anotherObj = {
   name: "Jane",
 };
 
-// call
+// CALL
 
 // Original
 obj.greet.call(anotherObj, "Hello", "girl");
