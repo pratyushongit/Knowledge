@@ -1,3 +1,6 @@
+//Worker 
+// https://www.greatfrontend.com/questions/quiz/what-are-workers-in-javascript-used-for
+
 // Web Worker
 
 const myWorker = new Worker("worker.js");
