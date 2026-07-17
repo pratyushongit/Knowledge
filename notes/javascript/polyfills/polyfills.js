@@ -16,7 +16,6 @@ const anotherObj = {
 // Original
 obj.greet.call(anotherObj, "Hello", "girl");
 
-
 // Polyfill
 Function.prototype.myCall = function (context = {}, ...args) {
   if (typeof this !== "function") {
@@ -229,78 +228,3 @@ const mySomeRes = arr.mySome((el, index, array) => {
 });
 
 console.log(mySomeRes);
-
-// --------------------- Promises --------------------------
-
-// Promise
-
-function MyPromise(executor) {
-  let onResolve;
-  let onReject;
-  let isFulfilled;
-  let isRejected;
-  let isCalled;
-  let value;
-
-  this.then = (cb) => {
-    onResolve = cb;
-
-    if (isFulfilled && !isCalled) {
-      onResolve(value);
-      isCalled = true;
-    }
-    return this;
-  };
-
-  this.catch = (cb) => {
-    onReject = cb;
-
-    if (isRejected && !isCalled) {
-      onReject(value);
-      isCalled = true;
-    }
-
-    return this;
-  };
-
-  const resolve = (val) => {
-    isFulfilled = true;
-    value = val;
-
-    if (typeof onResolve === "function") {
-      onResolve(val);
-      isCalled = true;
-    }
-  };
-
-  const reject = (val) => {
-    isRejected = true;
-    value = val;
-	
-    if (typeof onReject === "function") {
-      onReject(val);
-      isCalled = true;
-    }
-  };
-
-  try {
-    executor(resolve, reject);
-  } catch (error) {
-    reject(error);
-  }
-}
-
-const promise = new MyPromise((resolve, reject) => {
-  // setTimeout(() => {
-  reject("error");
-  // }, 1000);
-});
-
-promise
-  .then((data) => {
-    console.log(data);
-  })
-  .catch((error) => {
-    console.log(error);
-  });
-
