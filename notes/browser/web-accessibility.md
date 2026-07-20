@@ -4,9 +4,9 @@
 
 - Contrasting colors
 - dont depict any information using only color
-- provision to chang fonst sizes
+- provision to change font sizes
 - pair both mouse and key events
-- title in <a>
+- title in `<a>`
 - alt in images
 - aria tags
 - dont use images in css files
