@@ -231,7 +231,7 @@ const getScrollPos = () => {
 };
 
 const throttle = (method, time) => {
-  let lastExecuted = Date.now();
+  let lastExecuted = 0;
   return function (...args) {
     let context = this;
     const now = Date.now();

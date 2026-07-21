@@ -55,7 +55,7 @@ const i2 = Singleton.createInstance();
 console.log(i1 === i2);
 
 // STRUCTURAL DESIGN PATTERN
-// These patterns focus on how classes and objects are composed to form larger structures. 
+// These patterns focus on how classes and objects are composed to form larger structures.
 
 // Proxy Design Pattern
 // A proxy is an object which is like a interface/placeholder to anything.
@@ -113,7 +113,7 @@ const age = new Age();
 console.log(age.finalAge(1993));
 
 // BEHAVIOURIAL DESIGN PATTERN
-// These patterns are concerned with the assignment of responsibilities between objects. 
+// These patterns are concerned with the assignment of responsibilities between objects.
 
 //Strategy Design Pattern
 // We encapsulate a group of closely related algos
@@ -250,29 +250,21 @@ joe.sendMessage("hello", prat);
 // A visitor function is an object which contains the extra functionality
 // The object whose functinalities we want to add, should have an accept function which should accept the visitor function
 
-function Employee(name, salary) {
-  this.name = name;
-  this.salary = salary;
+function App() {
+  this.plugins = [];
 }
 
-Employee.prototype.getSalary = function () {
-  return this.salary;
+App.prototype.use = function (plugin) {
+  plugin(this);
+  this.plugins.push(plugin);
 };
 
-Employee.prototype.setSalary = function (salary) {
-  this.salary = salary;
-};
-
-Employee.prototype.accept = function (fn) {
-  fn(this);
-};
-
-function Visitor(obj) {
-  obj.setSalary(obj.getSalary() * 2);
+function MyPlugin(app) {
+  app.log = function (message) {
+    console.log(message);
+  };
 }
 
-const emp = new Employee("John", 1000);
-console.log(emp.getSalary());
-console.log(emp.salary);
-emp.accept(Visitor);
-console.log(emp.getSalary());
+const app = new App();
+app.use(MyPlugin);
+app.log("This is from plugin");
