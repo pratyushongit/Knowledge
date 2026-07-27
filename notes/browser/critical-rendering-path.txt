@@ -1,0 +1,46 @@
+Critical Rendering Path (CRP):
+Critical Rendering Path (CRP) is the sequence of browser operations that converts HTML, CSS, and JavaScript into rendered pixels on the screen. It involves building the DOM and CSSOM, creating the render tree, performing layout, painting, and compositing. Optimizing the CRP reduces page load time and improves rendering performance.
+
+
+Detailed Explanation:
+
+1. HTML Parsing → DOM
+- The browser downloads the HTML.
+- It parses HTML tags and creates the DOM tree.
+
+2. CSS Parsing → CSSOM
+- The browser downloads CSS files.
+- It parses CSS into the CSSOM tree.
+
+3. Create Render Tree
+- The browser combines: DOM & CSSOM to create the Render Tree. 
+- Only visible elements are included.
+
+4. Layout (Reflow)
+- Calculates exact size and position of each element
+- Determines viewport-relative positioning
+
+5. Paint
+- Converts render tree into pixels
+- Applies visual properties:
+  - Colors
+  - Borders
+  - Backgrounds
+  - Other visual styles
+
+
+6. Composite
+- Modern browsers split the page into layers and paints them
+- Combines painted layers into final display
+
+
+Resources That Block Rendering:
+- CSS is render-blocking because the browser needs styles before it can safely paint the page.
+- JavaScript can block HTML parsing if loaded synchronously.
+
+How to Optimize the Critical Rendering Path
+- Minify HTML, CSS, and JavaScript to reduce file sizes.
+- Defer or async non-critical JavaScript.
+- Compress assets using Gzip or Brotli.
+- Optimize images (WebP, AVIF, responsive images).
+- Preload important resources
