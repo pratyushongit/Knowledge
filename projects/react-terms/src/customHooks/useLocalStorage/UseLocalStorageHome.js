@@ -3,14 +3,17 @@ import useLocalStorage from "./utils/useLocalStorage";
 
 const UseLocalStorageHome = () => {
   const [text, setText] = useState("");
-  const { getLocalStorage, setLocalStorage, removeLocalStorage } =
-    useLocalStorage("value");
+  const [displayValue, setDisplayValue] = useState(null); // so "Get" is visible
+
+  const singleValue = useLocalStorage("single-value");
+  const listValue = useLocalStorage("list-value");
 
   const handleSetList = () => {
-    const list = getLocalStorage([]);
+    const list = listValue.getLocalStorage([]);
     list.push(text);
-    setLocalStorage(list);
+    listValue.setLocalStorage(list);
   };
+
   return (
     <>
       <input
@@ -20,16 +23,24 @@ const UseLocalStorageHome = () => {
         onChange={(e) => setText(e.target.value)}
       />
       <div>
-        <button onClick={() => setLocalStorage(text)}>Set</button>
-        <button onClick={() => getLocalStorage("")}>Get</button>
-        <button onClick={() => removeLocalStorage()}>Remove</button>
+        <button onClick={() => singleValue.setLocalStorage(text)}>Set</button>
+        <button
+          onClick={() => setDisplayValue(singleValue.getLocalStorage(""))}
+        >
+          Get
+        </button>
+        <button onClick={() => singleValue.removeLocalStorage()}>Remove</button>
       </div>
       <div>
-        {" "}
-        <button onClick={() => handleSetList()}>Set List</button>
-        <button onClick={() => getLocalStorage([])}>Get List</button>
-        <button onClick={() => removeLocalStorage()}>Remove List</button>
+        <button onClick={handleSetList}>Set List</button>
+        <button onClick={() => setDisplayValue(listValue.getLocalStorage([]))}>
+          Get List
+        </button>
+        <button onClick={() => listValue.removeLocalStorage()}>
+          Remove List
+        </button>
       </div>
+      <pre>{JSON.stringify(displayValue)}</pre>
     </>
   );
 };

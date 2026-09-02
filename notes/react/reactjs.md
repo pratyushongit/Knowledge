@@ -1,10 +1,12 @@
 # ReactJS
 
+> ⚠️ **Superseded by [`react-redux-master.md`](./react-redux-master.md)** — read that for interview prep. It consolidates and corrects this file (e.g. the "setState without re-rendering" and Context "static data" claims here are wrong — see the master doc's correction table). This file is kept as raw source only.
+
 React -> It has component based architecture.
 
 ## React 18 new features
 
-- new root API. use createRoot and createHydrate insead of render and hydrate.
+- new root API -> createRoot and createHydrate .
 - Introduced new feature called concurrency - Concept involving state update prioritization. urgent updates can be prioritized over less urgent updates
 
 new Concurrent APIs:
@@ -12,24 +14,30 @@ new Concurrent APIs:
 - useTransition()/startTransition()
 - useDeferredValue()
 
-- Automatic batch processing of states-  Batching is when React groups multiple state updates into a single re-render for better performance. Before React 18, we only batched updates inside React event handlers. Updates inside of promises, setTimeout, native event handlers, or any other event were not batched in React by default
+- Automatic batch processing of states- Batching is when React groups multiple state updates into a single re-render for better performance. Before React 18, we only batched updates inside React event handlers. Updates inside of promises, setTimeout, native event handlers, or any other event were not batched in React by default
 
 ```js
 // After React 18 updates inside of timeouts, promises,
 // native event handlers or any other event are batched.
 
 function handleClick() {
-  setCount(c => c + 1);
-  setFlag(f => !f);
+  setCount((c) => c + 1);
+  setFlag((f) => !f);
   // React will only re-render once at the end (that's batching!)
 }
 
 setTimeout(() => {
-  setCount(c => c + 1);
-  setFlag(f => !f);
+  setCount((c) => c + 1);
+  setFlag((f) => !f);
   // React will only re-render once at the end (that's batching!)
 }, 1000);
 ```
+
+## React 19 new features
+
+- introduction of the use() API
+- ref as a normal prop — no more forwardRef: forwardRef is dropped and the ref now comes as a prop instead of a separate argument.
+- Actions + useActionState, useFormStatus, useOptimistic — first-class async form handling with built-in pending/error state, replacing manual useState + useEffect boilerplate around form submission.
 
 JSX -> It is just an XML-like extension that allows us to write HTML elements in JavaScript.
 
@@ -69,19 +77,19 @@ Way 1 of setState->
 
 ```js
 this.setState(
-        {
-          stars: this.state.stars + 0.5,
-        },
-        () => console.log(this.state.stars)
-      );
+  {
+    stars: this.state.stars + 0.5,
+  },
+  () => console.log(this.state.stars),
+);
 ```
 
 Way 2 of setState->
 
 ```js
 this.setState((prevState) => ({
-        stars: prevState.stars - 0.5,
-      }));
+  stars: prevState.stars - 0.5,
+}));
 ```
 
 Batching in setState -> If multiple setStates are grouped together then:
@@ -118,7 +126,7 @@ i.e., it doesn't modify any variables outside of its scope, it doesn't mutate it
 Example:
 
 ```js
-const add = (a, b) => a+b; // A pure function adding two integers passed in it
+const add = (a, b) => a + b; // A pure function adding two integers passed in it
 ```
 
 JavaScript libraries and frameworks such as Redux and Lodash emphasize using pure functions.
@@ -127,11 +135,11 @@ Impure functions -> An impure function is a function that has side effects.
 Example:
 
 ```js
-const message = 'Hi ! ';
+const message = "Hi ! ";
 function myMessage(value) {
-	return `${message} ${value}`
+  return `${message} ${value}`;
 }
-console.log(myMessage('Aayushi'));
+console.log(myMessage("Aayushi"));
 ```
 
 In the above code, the result the function returns is dependent on the variable that is not declared inside the function. That's why this is an impure function.
@@ -140,7 +148,7 @@ In the above code, the result the function returns is dependent on the variable 
 
 #### Mounting Phase
 
-- constructor() - Automatically called when the class in initialized. It should not have any side effects. The state should directly be set. Not use setState();
+- constructor() - Automatically called when the class in initialized. Initialize the initial state directly using this.state = {...}. Don't use setState() in the constructor because the component hasn't mounted yet.
 - static getDerivedStateFromProps(nextProps,prevState) - It is a static method which means you do not have access to this inside of it. The purpose of getDerivedStateFromProps is to allow a component to update its state based on changes in props. If it detects a change that requires updating the state, it will return an object with the updated state. If no update is needed, it should return null. It should not have any side effects. Not use setState();
 - render() - returns JSX. It is a pure function. It should not have any side effects. Not use setState() as it will go into an infinite loop.;
 - componentDidMount() - Called only ONCE after component mount. This is where side effects and setState() is written. Use this method to call APIs.
@@ -148,7 +156,7 @@ In the above code, the result the function returns is dependent on the variable 
 #### Updating Phase
 
 - static getDerivedStateFromProps(nextProps, nextState) - Explation given above.
-- shouldComponentUpdate(nextProps, nextState) - Returns boolean determining whether a component should update or not. Allows you to optimize the performance of your components by controlling whether a component should re-render when its props or state change. Check if the new props or state are different from the current props or state. By default, it returns true.  It should not have any side effects. Not use setState();
+- shouldComponentUpdate(nextProps, nextState) - Returns boolean determining whether a component should update or not. Allows you to optimize the performance of your components by controlling whether a component should re-render when its props or state change. Check if the new props or state are different from the current props or state. By default, it returns true. It should not have any side effects. Not use setState();
 - render() - Explation given above.
 - getSnapShotBeforeUpdate(prevProps, prevState) - It returns a value called snapshot. This is called just before React syncs the real DOM with the Virtual DOM. It allows you to capture some information from the DOM just before it changes. This pattern can be useful for maintaining scroll positions, especially in dynamic lists where items are being added or removed. This method must return either null or a value. If a value is returned, it will be passed as the third parameter to the componentDidUpdate() method. It should not have any side effects. Not use setState();
 - componentDidUpdate(prevProps, prevState, snapshot) - It is called after React has synced the virtual DOM with the real DOM. We can perform side effects and set state here. It gets called at EACH render cycle.
@@ -159,7 +167,7 @@ In the above code, the result the function returns is dependent on the variable 
 
 #### Error Handling
 
-- static getDerivedStateFromError(error) - It is used to update the state of the error boundary component if any error occurs in it's child component before the error is passed to componentDidCatch.  It is a static method which means you do not have access to this inside of it. It will return an object with the updated state. If no error is found, it should return null.
+- static getDerivedStateFromError(error) - It is used to update the state of the error boundary component if any error occurs in it's child component before the error is passed to componentDidCatch. It is a static method which means you do not have access to this inside of it. It will return an object with the updated state. If no error is found, it should return null.
 - componentDidCatch(error,info) - It is used to catch the error if any error occurs in the error boundary's child component. It has access to the actual error and information about the error.
 
 Error Boundary -> It is a component that catches JavaScript errors anywhere in its child components, logs those errors, and displays a fallback UI instead of crashing the entire application. A component is said to be error boundary if it contains either of the error handling life cycle methods or both of them.
@@ -168,13 +176,12 @@ Error Boundary -> It is a component that catches JavaScript errors anywhere in i
 
 ## Hooks
 
-Hooks are functions that let you “hook into” React state and lifecycle features from function components. We can make use of as many hooks as many times we want in functional component.
-Don’t call Hooks inside loops, conditions, or nested functions.
+Hooks are functions that let you “hook into” React state and lifecycle features from function components. They are only called at the top level of a component or another hook — never inside conditions, loops, or nested functions.
 
 useState() - It is a react hook that allows functional components to manage state.
 
 ```js
-const [name, setName] = useState('Ram');
+const [name, setName] = useState("Ram");
 ```
 
 useEffect(callback, dependencies) - It is a react hook which lets us to perform any side effects in function components. It runs asynchronously. Which means while react paints the webside, the useeffect can run in the backgound asynchronously without blocking the UI.
@@ -183,7 +190,14 @@ useEffect(callback, dependencies) - It is a react hook which lets us to perform 
 - useEffect(callback, []) - The effect runs only once after the initial render, similar to componentDidMount in class components.
 - useEffect(callback, [dependencies]) - The effect runs after the initial render and after every update, but only if one of the dependencies has changed since the last render.
 
-It has a a cleanup function that runs when the component is unmounted. First unmounting functions are called then after, mounting happens. Hence, First all the unmounts from all the useeffects are called then the console.logs inside useEffects are called.
+useEffect can return a cleanup function. The cleanup function runs when the component is unmounted. It also runs before the effect is re-run when its dependencies change. During an update, React first performs the necessary cleanup from the previous effect, and then runs the new effect after rendering.
+
+Rerendering sequence:
+
+1. Render
+2. React commits/updates the DOM
+3. useEffect cleanup (if there is one)
+4. useEffect runs
 
 useLayoutEffect() -> It runs synchronously b/w when React calculates our DOM and when React paints it out to the screen. This is mostly used when we want to change the layout of some elements before they are being rendered on the screen.
 
@@ -205,16 +219,18 @@ const reducer = (state, action) => {
 };
 ```
 
-useMemo() - is a React Hook that lets you cache the result of expensive calculations between re-renders.
+useMemo() - is used to memoize the result of a calculation. React will remember the calculated value and return the same value on subsequent renders as long as its dependencies haven't changed. If any dependency changes, React will run the calculation again and store the new result. This helps avoid unnecessary expensive calculations on every render.
 
 ```js
 const number = useMemo(() => numbers.find((el) => el.isMagical), [numbers]);
 ```
 
-useCallback() - is a React Hook that lets you cache an expensive function definition between re-renders.
+useCallback() - By wrapping a function in useCallback(), we are telling React to memoize the function itself. React will return the same function reference between renders unless one of its dependencies changes. This prevents a new function from being created on every render, which is useful when passing callbacks to memoized components or when the function is used as a dependency of another Hook.
 
 ```js
-const myFunc = useCallback(() => {return "another" + count}, [count])
+const myFunc = useCallback(() => {
+  return "another" + count;
+}, [count]);
 ```
 
 useTransition()/startTransition() -> New in React 18 . Wrap a state update with useTransition() or startTransition() to let react know that some state update might be handled with lower priority.
@@ -239,7 +255,29 @@ const deferredCount = useDeferredValue(count);
 useTransition() is used when we have control over the state update.
 useDeferredValue() is used when we don't have control over the state update.
 
-Custom hooks -  It helps to share the stateful logic between different components. It allows you to encapsulate common functionality into reusable functions. They are a great way to make your code more scalable, reusable, and Separation of concerns. They start with the use keyword. They dont return any JSX. We can even include once custom hook inside another.
+useImperativeHandle + forwardRef -> They are used when we want to access anything of a child component from iside of a parent component, or when the parent component want to call a function of a child component. Like focus(), etc. forwardRef is used to pass the ref created by the parent component onto the child component and the useImperativeHandle method attaches the functions 0r APIs the child component wants to expose onto the ref sent by the parent so that the parent component is able to access these functions.
+
+use() -> It was introduced in React19. The main distinction of this hook from traditional hooks is that it can be used inside conditional statements (if) and loops (for). It is used primarily in 2 conditions:
+
+- Consuming a Promise (Data Fetching): Ideally for calling promises we had to use useEffect, useState, manage loading states to show spinner. All that is mitigated by the use of `use`. We directly call the promise using `data = use(promise)` and set the value like <List data={data}/>. And wrap this component method in a `<Suspense fallback={<FallbackComponent/>}>` component which shows a loader/spinner while the data is loading. Note: Make sure the promise is coming from ouside of the component and the promise is not created inside the component otherwise everytime the component rerenders the promise gets created again causing unnecessary bugs.
+
+- Reading Context Conditionally: Suppose you have a context may be a ThemeContext which needs to be called based on a condition like if the `themes` feature flag is enabled. This is possible using use like the example shown below. This was not possible prior to React 19.
+
+```js
+if(themes){
+  const theme = use(ThemeContext);
+  <Element theme={}/>;
+}
+
+```
+
+useActionState() - new in React 19 -> This hook is used to manage the data, error and the pending states of a form all in one single hook instead of 3 separate useStates.
+
+useFormStatus() - new in React 19 -> is a built-in React hook from react-dom that gives you status information about the last form submission. Key Features : gives Pending State info, Form Data info, Method & Action Info. To use useFormStatus, the component calling the hook must be a child of a <form> element. It reads the status of the parent form like a context provider.
+
+useOptimistic() - new in React 19 -> allows you to optimistically update the user interface during asynchronous operations with automatic rollback on failure.
+
+Custom hooks - It helps to share the stateful logic between different components. It allows you to encapsulate common functionality into reusable functions. They are a great way to make your code more scalable, reusable, and Separation of concerns. They start with the use keyword. They dont return any JSX. We can even include once custom hook inside another.
 Examples of custom hooks:
 
 - useTheme - set dark/light theme of app
@@ -260,18 +298,18 @@ NOT Using Data API ->
 BrowserRouter
 HashRouter
 
-For testing we can use  -> createMemoryRouter
+For testing we can use -> createMemoryRouter
 
 ErrorElement -> Finds errors in the level in which it is written(siblings) and its children routes.
 Whenever an error occurs in a route it bubbles up until it finds an errorElement. Hence it's better to write at least one errorElement in the root route.
 useRouteError -> get value of the error of the component
 
-Wildcard (*) is triggered when there is a mismatch in route path params
+Wildcard (\*) is triggered when there is a mismatch in route path params
 ErrorElement is triggered when there is an error in the page itself and is used to show a proper ui. Specifically when loaders or actions throw any error.
 
 useNavigate -> hook to navigate programatically. It's useful for scenarios where you need to trigger navigation based on user interactions.
 
-index route->  When we have nested routes and we want a route to be shown at the parent url we can use index route.
+index route-> When we have nested routes and we want a route to be shown at the parent url we can use index route.
 
 useOutletContext -> child routes to access data or state provided by parent routes in context.
 context of <Outlet /> -> parent route passes any data to the child route
@@ -294,14 +332,14 @@ searchParams.get('id')-> get value of query param with key as "id"
 Setting query params->
 
 ```js
- const [searchParams, setSearchParams] = useSearchParams();
- 
+const [searchParams, setSearchParams] = useSearchParams();
+
 setSearchParams((params) => {
-      const newParams = new URLSearchParams(params);
-      newParams.set("name", "riya");
-      newParams.set("age", 20);
-      return newParams;
-    });
+  const newParams = new URLSearchParams(params);
+  newParams.set("name", "riya");
+  newParams.set("age", 20);
+  return newParams;
+});
 ```
 
 ---
@@ -319,7 +357,7 @@ When a component that consumes the context by subscribing to it using useContext
 
 It has 3 steps:
 Create Context: export context = createContext(defaultValue?)
-	It takes an optional default value as an argument, which is only used when a component does not have a matching Provider above it in the tree.
+It takes an optional default value as an argument, which is only used when a component does not have a matching Provider above it in the tree.
 
 Provide Context: It is used to provide the context value to the tree below it. It takes a value prop which is the value we want to provide the the enclosed component and it's children. <context.Provider value={<value>}></context.Provider>
 
@@ -327,16 +365,16 @@ Consume Context: Consume the data provided by the Provider using the 'Consumer'c
 Using useContext() hook:
 
 ```js
-	const color = useContext(context);
-	return <span style={{ color }}>{color}</span>;
+const color = useContext(context);
+return <span style={{ color }}>{color}</span>;
 ```
 
 Using Consumer component:
 
 ```jsx
-	<context.Consumer>
-	    {(color) => <span style={{ color }}>Colour: {color}</span>}
-	  </context.Consumer>
+<context.Consumer>
+  {(color) => <span style={{ color }}>Colour: {color}</span>}
+</context.Consumer>
 ```
 
 Notes:
@@ -388,7 +426,7 @@ There can be multiple stores in a Redux application, but it can make the state m
 We should not use store.Get state in our components because it is not a good practice to import store in every component. Hence use useSelector hook.
 
 ```js
-const todos = useSelector((state) => state.todos) // here the state variabe is similar to store.getState().
+const todos = useSelector((state) => state.todos); // here the state variabe is similar to store.getState().
 ```
 
 react-redux library is different from redux library.

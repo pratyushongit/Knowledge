@@ -196,58 +196,73 @@ Shape.call({}, "red");
 // Debouncing
 // Debouncing is a technique used to improve performance by delaying the execution of a function until after a certain amount of time has passed since the last time the function was called.
 
-const inputElement = document.querySelector("#username");
+const filterEl = document.querySelector("#filter");
+const filteredListElement = document.querySelector(".filteredList");
 
-const fetchData = async (filter) => {
-  const data = await fetch(
-    `https://api.escuelajs.co/api/v1/products/?title=${filter}`,
-  );
-  const res = await data.json();
-  console.log(res);
+const handleFilter = async (query) => {
+  console.log(query);
+  filteredListElement.innerHTML = "";
+  try {
+    const res = await fetch(
+      `https://api.escuelajs.co/api/v1/products/?title=${query}`,
+    );
+    const data = await res.json();
+    const list = data.map((el) => `<li>${el.title}</li>`).join("");
+    filteredListElement.insertAdjacentHTML("afterbegin", list);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-const debounce = (method, time) => {
-  let timeoutId;
+const debounce = (cb, time) => {
+  let timer;
   return function (...args) {
-    let context = this;
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
-      method.apply(context, args);
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      cb.apply(this, args);
     }, time);
   };
 };
 
-const debouncedFetchData = debounce(fetchData, 300);
+const debouncedHandleFilter = debounce(handleFilter, 300);
 
-inputElement.addEventListener("keyup", (event) => {
-  debouncedFetchData(event.target.value);
+filterEl.addEventListener("keyup", (event) => {
+  debouncedHandleFilter(event.target.value);
 });
 
 // Throttling
 //  It s an optimisation technique which limits the number of times a function gets executed, irrespective of the number of times the event has been fired.
 
-const getScrollPos = () => {
-  console.log(window.scrollY);
+const viewportSizeElement = document.querySelector(".viewportSize");
+
+const getViewportSize = () => {
+  viewportSizeElement.innerHTML = `Width: ${window.innerWidth} Height: ${window.innerHeight}`;
 };
 
-const throttle = (method, time) => {
+const throttle = (cb, time) => {
   let lastExecuted = 0;
+  let timeoutId = null;
+
   return function (...args) {
-    let context = this;
     const now = Date.now();
-    const elapsedTime = now - lastExecuted;
-    if (elapsedTime > time) {
+    const elapsed = now - lastExecuted;
+    if (elapsed >= time) {
+      cb.apply(this, args);
       lastExecuted = now;
-      method.apply(context, args);
+    } else {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        cb.apply(this, args);
+        lastExecuted = Date.now();
+      }, time - elapsed);
     }
   };
 };
 
-const throttledGetScrollPos = throttle(getScrollPos, 1000);
+const throttledGetViewportSize = throttle(getViewportSize, 500);
 
-window.addEventListener("scroll", (event) => {
-  throttledGetScrollPos();
-});
+getViewportSize();
+window.addEventListener("resize", throttledGetViewportSize);
 
 // Factory Function
 

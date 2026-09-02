@@ -9,10 +9,11 @@ const useLocalStorage = (key) => {
 
   const getLocalStorage = (initialValue) => {
     try {
-      let data = localStorage.getItem(key);
+      const data = localStorage.getItem(key);
       return data ? JSON.parse(data) : initialValue;
     } catch (error) {
       console.log(error);
+      return initialValue;
     }
   };
 

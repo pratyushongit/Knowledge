@@ -3,19 +3,25 @@ import axios from "axios";
 
 const useFetch = (url = "") => {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(() => !!url);
   const [error, setError] = useState(null);
   const cache = useRef({});
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!url) {
+        setLoading(false);
+        setData(null);
+        setError(null);
+        return;
+      }
       try {
         setLoading(true);
         if (cache.current[url]) {
           setData(cache[url]);
         } else {
           const { data } = await axios.get(url);
-          cache.current = { ...cache.current, [url]: data };
+          cache.current[url] = data;
           setData(data);
         }
       } catch (error) {
