@@ -97,11 +97,89 @@ It manages loading and error states automatically through the useQuery hook's re
 useQuery() -> to Read data from API
 useMutation() -> to Create, Update, Delete data through API
 
+```jsx
+const createProduct = async (product) => {
+  const response = await fetch("/api/products", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(product),
+  });
+
+  return response.json();
+};
+
+function Products() {
+  const queryClient = useQueryClient();
+
+  // GET
+  const { data: products, isLoading } = useQuery({
+    queryKey: ["products"],
+    queryFn: fetchProducts,
+  });
+
+  // POST
+  const createProductMutation = useMutation({
+    mutationFn: createProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
+    },
+  });
+
+  // PUT
+  const updateProductMutation = useMutation({
+    mutationFn: updateProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
+    },
+  });
+
+  // DELETE
+  const deleteProductMutation = useMutation({
+    mutationFn: deleteProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
+    },
+  });
+
+  // ...
+}
+```
+
 ---
 
 ## Function composition
 
-Function composition -> refers to the technique of combining multiple functions to create more complex functions. Function composition in React involves creating functions that wrap or enhance other functions to modify behavior or add functionality.
+Function composition ->
+In React, function composition means combining multiple functions/components together so that each one adds or performs a specific piece of behavior, producing a more useful final function or component.
+
+Instead of putting all logic into one large function, we can build functionality by combining smaller functions.
+This concept is particularly common with Higher-Order Components (HOCs)
+
+```js
+const withAuth = (Component) => {
+  return (props) => {
+    console.log("Checking authentication...");
+    return <Component {...props} />;
+  };
+};
+
+const withLogger = (Component) => {
+  return (props) => {
+    console.log("Component rendered");
+    return <Component {...props} />;
+  };
+};
+
+const EnhancedComponent = withAuth(withLogger(MyComponent));
+```
 
 ---
 
@@ -146,15 +224,25 @@ Limitations of HOC:
 Prop collision or Prop name collision -> So if we are using multiple nested HOCs and in one HOC we pass a prop 'name'. Now in other HOC we might overwrite the prop value with a different one while keeping the same prop name 'name'. This leads to prop collision.
 Debugging is thougher when we wrap a component with multiple HOCs
 
+```jsx
+function withUser(Wrapped) {
+  return function Enhanced(props) {
+    const user = useContext(UserContext);
+    return <Wrapped user={user} {...props} />; // props spread AFTER
+  };
+}
+
+const UserProfile = withUser(Profile);
+<UserProfile user={someOtherUser} />;
+```
+
 Solve the above limitations using -> Render props or custom hooks.
 
 ---
 
 ## Render props pattern
 
-is a technique for sharing code between React components using a prop whose value is a function.
-A component with a render prop takes a function that returns JSX and calls it instead of implementing its own render logic.
-This technique enables components to share logic while keeping their rendering responsibilities decoupled.
+Render Props is a React pattern where a component receives a function as a prop and calls that function to decide what should be rendered. The component handles the logic, while the parent decides what UI to render.
 
 Libraries that use render props include-> React Router. example -> <RouterProvider router={router}></RouterProvider>
 Render props are used in - fetching data, form validation, mouse tracking
@@ -170,7 +258,7 @@ Advantages:
 
 ## Compound Components
 
-Compound components are a design pattern in React (and other component-based libraries/frameworks) that allow for more flexible and reusable UI components. They involve creating a parent component and several child components that are intended to be used together. These child components share context and can be composed together to form complex and customizable UI elements.
+Compound Components is a React design pattern where multiple related components are designed to work together, with a parent component managing shared state and behavior, typically using Context, while allowing consumers to control the structure and composition of the UI.
 
 ---
 

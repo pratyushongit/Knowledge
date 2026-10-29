@@ -259,7 +259,7 @@ useImperativeHandle + forwardRef -> They are used when we want to access anythin
 
 use() -> It was introduced in React19. The main distinction of this hook from traditional hooks is that it can be used inside conditional statements (if) and loops (for). It is used primarily in 2 conditions:
 
-- Consuming a Promise (Data Fetching): Ideally for calling promises we had to use useEffect, useState, manage loading states to show spinner. All that is mitigated by the use of `use`. We directly call the promise using `data = use(promise)` and set the value like <List data={data}/>. And wrap this component method in a `<Suspense fallback={<FallbackComponent/>}>` component which shows a loader/spinner while the data is loading. Note: Make sure the promise is coming from ouside of the component and the promise is not created inside the component otherwise everytime the component rerenders the promise gets created again causing unnecessary bugs.
+- Consuming a Promise (Data Fetching): Ideally for calling promises we had to use useEffect, useState, manage loading states to show spinner. All that is mitigated by the use of `use`. We directly call the promise using `data = use(promise)` and set the value like `<List data={data}/>`. And wrap this component method in a `<Suspense fallback={<FallbackComponent/>}>` component which shows a loader/spinner while the data is loading. Note: Make sure the promise is coming from ouside of the component and the promise is not created inside the component otherwise everytime the component rerenders the promise gets created again causing unnecessary bugs.
 
 - Reading Context Conditionally: Suppose you have a context may be a ThemeContext which needs to be called based on a condition like if the `themes` feature flag is enabled. This is possible using use like the example shown below. This was not possible prior to React 19.
 
@@ -273,7 +273,7 @@ if(themes){
 
 useActionState() - new in React 19 -> This hook is used to manage the data, error and the pending states of a form all in one single hook instead of 3 separate useStates.
 
-useFormStatus() - new in React 19 -> is a built-in React hook from react-dom that gives you status information about the last form submission. Key Features : gives Pending State info, Form Data info, Method & Action Info. To use useFormStatus, the component calling the hook must be a child of a <form> element. It reads the status of the parent form like a context provider.
+useFormStatus() - new in React 19 -> is a built-in React hook from react-dom that gives you status information about the last form submission. Key Features : gives Pending State info, Form Data info, Method & Action Info. To use useFormStatus, the component calling the hook must be a child of a `<form action={action}>` element. It reads the status of the parent form like a context provider.
 
 useOptimistic() - new in React 19 -> allows you to optimistically update the user interface during asynchronous operations with automatic rollback on failure.
 
@@ -288,6 +288,18 @@ Examples of custom hooks:
 
 ## React router
 
+BrowserRouter -> It enables client side routing by making use of the browser's history API.
+
+Routes -> Used for rendering approprite component based on the current URL.
+
+Route -> Used to define the component which should be rendered based on the path.
+
+Layout Route -> A layout route is a parent route whose main purpose is to provide a common UI/layout for its child routes.
+
+Index Route -> An index route is the default child route of a parent route.
+
+Prefix Route -> Lets you give multiple routes a common URL prefix without creating a UI/layout component.
+
 Data API -> While routing from one page to another we can pass the data.
 
 Using Data API ->
@@ -300,7 +312,7 @@ HashRouter
 
 For testing we can use -> createMemoryRouter
 
-ErrorElement -> Finds errors in the level in which it is written(siblings) and its children routes.
+ErrorElement -> errorElement is mainly associated with the data-router APIs. Finds errors in the level in which it is written(siblings) and its children routes.
 Whenever an error occurs in a route it bubbles up until it finds an errorElement. Hence it's better to write at least one errorElement in the root route.
 useRouteError -> get value of the error of the component
 
@@ -318,12 +330,7 @@ Navigate component - It allows you to navigate to a different route in response 
 replace={true} -> the current entry in the history stack should be replaced with the new location. This prevents the current location from being stored in the browser's history.
 
 Loaders -> Load data onto a component before it renders.
-useLoaderData -> get data of the loader in the component in which the loader is registered.
-
-actions -> An "action" refers to the operations that can be performed on the router. Actions are called whenever the app sends a non-get submission ("post", "put", "patch", "delete") to your route.
-useActionData -> get data of the action. The most common use-case for this hook is form validation errors. If the form isn't right, you can return the errors and let the user try again:
-
-useLocation -> returns the current location object, which represents where the app is currently rendered.
+useLoaderData -> get data of the loader in the component in which the loader is registered. You cannot use the data-router loader feature with this plain <Routes> setup.
 
 useParams() -> used to get path Params.
 
@@ -359,7 +366,7 @@ It has 3 steps:
 Create Context: export context = createContext(defaultValue?)
 It takes an optional default value as an argument, which is only used when a component does not have a matching Provider above it in the tree.
 
-Provide Context: It is used to provide the context value to the tree below it. It takes a value prop which is the value we want to provide the the enclosed component and it's children. <context.Provider value={<value>}></context.Provider>
+Provide Context: It is used to provide the context value to the tree below it. It takes a value prop which is the value we want to provide the the enclosed component and it's children. `<context.Provider value={<value>}></context.Provider>`
 
 Consume Context: Consume the data provided by the Provider using the 'Consumer'component or the useContext() hook.
 Using useContext() hook:
